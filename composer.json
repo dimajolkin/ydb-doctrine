@@ -1,0 +1,27 @@
+{
+    "name": "dimajolkin/ydb-doctrine",
+    "autoload": {
+        "psr-4": {
+            "Dimajolkin\\YdbDoctrine\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Dimajolkin\\YdbDoctrine\\Tests": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "dimajolkin",
+            "email": "dimajolkin@rambler.ru"
+        }
+    ],
+    "require": {
+        "yandex-cloud/ydb-php-sdk": "^1.3",
+        "doctrine/orm": "^2.13"
+    },
+    "require-dev": {
+        "symfony/var-dumper": "^6.1",
+        "phpunit/phpunit": "^9.5"
+    }
+}
