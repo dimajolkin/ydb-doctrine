@@ -36,7 +36,7 @@ class YdbDriver implements Driver
 
     public function getSchemaManager(Connection $conn, AbstractPlatform $platform)
     {
-        return new YdbSchemaManager($conn, $platform);
+        return new YdbSchemaManager($conn, $platform, $this->ydb);
     }
 
     public function getExceptionConverter(): ExceptionConverter

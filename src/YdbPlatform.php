@@ -2,10 +2,41 @@
 
 namespace Dimajolkin\YdbDoctrine;
 
+use Dimajolkin\YdbDoctrine\Platform\Keywords;
+use Doctrine\DBAL\Exception;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 
 class YdbPlatform extends AbstractPlatform
 {
+    protected function getVarcharTypeDeclarationSQLSnippet($length, $fixed/*, $lengthOmitted = false*/)
+    {
+        return 'String';
+    }
+
+    /**
+     * Нет DEFAULT
+     */
+    public function getDefaultValueDeclarationSQL($column)
+    {
+        return '';
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getDateTimeTypeDeclarationSQL(array $column)
+    {
+        return 'Datetime';
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getDateTimeTzTypeDeclarationSQL(array $column)
+    {
+        return 'TzDateTime';
+    }
+
     public function getBooleanTypeDeclarationSQL(array $column)
     {
         return 'Bool';
@@ -96,5 +127,10 @@ class YdbPlatform extends AbstractPlatform
     public function getCurrentDatabaseExpression(): string
     {
         return 'CurrentUtcDate()';
+    }
+
+    protected function getReservedKeywordsClass(): string
+    {
+        return Keywords::class;
     }
 }
