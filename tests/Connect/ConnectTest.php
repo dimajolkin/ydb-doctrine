@@ -58,4 +58,10 @@ class ConnectTest extends TestCase
         $conn->insert('my_table', $data, ['id' => ParameterType::INTEGER]);
         $this->assertEquals($data,  $this->query('select id, name from my_table where name = \'ivan\'')->fetchAssociative());
     }
+
+    public function testCreateTableMigration()
+    {
+        $sql = 'CREATE TABLE doctrine_migration_versions2 (version String NOT NULL, executed_at Datetime, execution_time Int32, PRIMARY KEY(version));';
+        $this->query($sql);
+    }
 }

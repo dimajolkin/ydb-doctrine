@@ -13,32 +13,20 @@ use YandexCloud\Ydb\Ydb;
 class YdbConnection implements Connection
 {
     private ?Session $session = null;
-    private Table $table;
 
     public function __construct(
         private Ydb $ydb
     ) {
-        $this->table = $this->ydb->table();
     }
 
     public function prepare(string $sql): Statement
     {
-        return new YdbStatement($this, $sql);
+        return new YdbStatement($this, $sql, $this->ydb->table()->session());
     }
 
     public function query(string $sql): Result
     {
-        try {
-            $res = $this->table->query($sql);
-            $this->table->session()->commit();
-        } catch (\Throwable $exception) {
-            try {
-                $this->table->session()->rollBack();
-            } catch (\Exception $exception) {}
-            throw $exception;
-        }
-
-        return new YdbResult($res);
+        return $this->prepare($sql)->execute();
     }
 
     public function quote($value, $type = ParameterType::STRING)
@@ -64,16 +52,16 @@ class YdbConnection implements Connection
 
     public function beginTransaction()
     {
-        $this->session?->beginTransaction();
+//        $this->session?->beginTransaction();
     }
 
     public function commit()
     {
-        $this->session?->commit();
+//        $this->session?->commit();
     }
 
     public function rollBack()
     {
-        $this->session?->rollBack();
+//        $this->session?->rollBack();
     }
 }
