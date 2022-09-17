@@ -4,6 +4,7 @@ namespace Dimajolkin\YdbDoctrine\Tests\Connect;
 
 use Dimajolkin\YdbDoctrine\YdbResult;
 use Doctrine\DBAL\DriverManager;
+use Doctrine\DBAL\ParameterType;
 use Doctrine\DBAL\Result;
 use Doctrine\DBAL\Schema\Table;
 use PHPUnit\Framework\TestCase;
@@ -44,5 +45,17 @@ class ConnectTest extends TestCase
     {
         $this->assertEquals(1,  $this->query('select id, name from my_table')->fetchOne());
         $this->assertEquals([['id' => 1, 'name' => 'dima'], ['id' => 2, 'name' => 'nadia']],  $this->query('select id, name from my_table')->fetchAllAssociative());
+
+
+    }
+
+    public function testInsert()
+    {
+        $conn = $this->ydbConnect();
+        $conn->delete('my_table', ['name' => 'ivan']);
+        $this->assertEquals(false,  $this->query('select id, name from my_table where name = \'ivan\'')->fetchAssociative());
+        $data = ['id' => 6, 'name' => 'ivan'];
+        $conn->insert('my_table', $data, ['id' => ParameterType::INTEGER]);
+        $this->assertEquals($data,  $this->query('select id, name from my_table where name = \'ivan\'')->fetchAssociative());
     }
 }
