@@ -3,21 +3,23 @@
 namespace Dimajolkin\YdbDoctrine;
 
 use Doctrine\DBAL\Driver\Connection;
-use Doctrine\DBAL\Driver\Exception;
 use Doctrine\DBAL\Driver\Result;
 use Doctrine\DBAL\Driver\Statement;
 use Doctrine\DBAL\ParameterType;
+use YandexCloud\Ydb\Session;
 use YandexCloud\Ydb\Ydb;
 
 class YdbConnection implements Connection
 {
+    private ?Session $session = null;
+
     public function __construct(
         private Ydb $ydb
     ) { }
 
     public function prepare(string $sql): Statement
     {
-        // TODO: Implement prepare() method.
+        throw new \Exception();
     }
 
     public function query(string $sql): Result
@@ -31,31 +33,33 @@ class YdbConnection implements Connection
 
     public function quote($value, $type = ParameterType::STRING)
     {
-        // TODO: Implement quote() method.
+        return $value;
     }
 
     public function exec(string $sql): int
     {
-        // TODO: Implement exec() method.
+        $res = $this->query($sql);
+
+        return $res->rowCount();
     }
 
     public function lastInsertId($name = null)
     {
-        // TODO: Implement lastInsertId() method.
+        throw new \Exception();
     }
 
     public function beginTransaction()
     {
-        // TODO: Implement beginTransaction() method.
+        $this->session?->beginTransaction();
     }
 
     public function commit()
     {
-        // TODO: Implement commit() method.
+        $this->session?->commit();
     }
 
     public function rollBack()
     {
-        // TODO: Implement rollBack() method.
+        $this->session?->rollBack();
     }
 }
