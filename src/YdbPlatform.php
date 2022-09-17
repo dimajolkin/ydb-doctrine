@@ -15,6 +15,7 @@ class YdbPlatform extends AbstractPlatform
     {
         return 'String';
     }
+    
 
     public function getAlterTableSQL(TableDiff $diff)
     {
