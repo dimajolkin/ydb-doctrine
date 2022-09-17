@@ -21,6 +21,12 @@ class YdbPlatform extends AbstractPlatform
         return;
     }
 
+    public function supportsSequences()
+    {
+        return true;
+    }
+
+
     /**
      * Нет DEFAULT
      */

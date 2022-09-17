@@ -26,7 +26,7 @@ class YdbSchemaManager extends AbstractSchemaManager
     {
         // TODO: Implement _getPortableTableColumnDefinition() method.
     }
-    
+
     private function bindType(string $type): Type
     {
         return match ($type) {
@@ -37,28 +37,30 @@ class YdbSchemaManager extends AbstractSchemaManager
         };
     }
 
-    public function listTableColumns($table, $database = null)
+    public function listTableColumns($table, $database = null): array
     {
         $list = [];
         $data = $this->ydb->table()->session()->describeTable($table);
         foreach ($data['columns'] as $column) {
+            $notnull = true;
             $type = $column['type']['typeId'] ?? null;
             if (!$type) {
                 $type = $column['type']['optionalType']['item']['typeId'] ?? throw new \Exception();
+                $notnull = false;
             }
-            
-            $list[] = new Column($column['name'], $this->bindType($type));
+
+            $list[] = new Column($column['name'], $this->bindType($type), ['notnul' => $notnull]);
         }
-        
+
         return $list;
     }
 
-    public function listTableForeignKeys($table, $database = null)
+    public function listTableForeignKeys($table, $database = null): array
     {
         return [];
     }
 
-    public function listTableIndexes($table)
+    public function listTableIndexes($table): array
     {
         return [];
     }

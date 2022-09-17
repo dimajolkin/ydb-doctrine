@@ -26,6 +26,8 @@ class YdbStatement implements Statement
     public function bindValue($param, $value, $type = ParameterType::STRING)
     {
         $this->bindValues[$param] = [$value, $type];
+        
+        return true;
     }
 
     public function bindParam($param, &$variable, $type = ParameterType::STRING, $length = null)
