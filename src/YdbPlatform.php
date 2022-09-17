@@ -5,12 +5,20 @@ namespace Dimajolkin\YdbDoctrine;
 use Dimajolkin\YdbDoctrine\Platform\Keywords;
 use Doctrine\DBAL\Exception;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
+use Doctrine\DBAL\Schema\TableDiff;
+use YandexCloud\Ydb\Ydb;
 
 class YdbPlatform extends AbstractPlatform
 {
+
     protected function getVarcharTypeDeclarationSQLSnippet($length, $fixed/*, $lengthOmitted = false*/)
     {
         return 'String';
+    }
+
+    public function getAlterTableSQL(TableDiff $diff)
+    {
+        return;
     }
 
     /**

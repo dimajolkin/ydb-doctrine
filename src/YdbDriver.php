@@ -21,7 +21,7 @@ class YdbDriver implements Driver
             'endpoint'    => 'ydb.serverless.yandexcloud.net:2135',
             'discovery'   => false,
             'iam_config'  => [
-                'service_file'   => __DIR__ . '/../user.json',
+                'service_file'   => __DIR__ . '/../../../../var/user.json',
             ],
         ];
 
@@ -31,7 +31,7 @@ class YdbDriver implements Driver
 
     public function getDatabasePlatform()
     {
-        return new YdbPlatform();
+        return new YdbPlatform($this->ydb);
     }
 
     public function getSchemaManager(Connection $conn, AbstractPlatform $platform)
