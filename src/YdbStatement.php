@@ -6,6 +6,7 @@ use Doctrine\DBAL\Driver\Exception;
 use Doctrine\DBAL\Driver\Result;
 use Doctrine\DBAL\Driver\Statement;
 use Doctrine\DBAL\ParameterType;
+use Doctrine\DBAL\Types\Types;
 use YandexCloud\Ydb\Session;
 use function PHPUnit\Framework\throwException;
 
@@ -23,14 +24,14 @@ class YdbStatement implements Statement
 
     }
 
-    public function bindValue($param, $value, $type = ParameterType::STRING)
+    public function bindValue($param, $value, $type = ParameterType::STRING): bool
     {
         $this->bindValues[$param] = [$value, $type];
         
         return true;
     }
 
-    public function bindParam($param, &$variable, $type = ParameterType::STRING, $length = null)
+    public function bindParam($param, &$variable, $type = ParameterType::STRING, $length = null): bool
     {
         throw new \Exception('YdbStatement::bindParam don\'t imp');
     }
@@ -48,24 +49,15 @@ class YdbStatement implements Statement
     public function execute($params = null): Result
     {
         $sql = $this->getRawSql();
-        try {
-            $this->session->beginTransaction();
+        
+        return $this->session->transaction(function () use ($sql) {
             if (str_starts_with($sql, 'CREATE')) {
                 $status = $this->session->schemeQuery($sql);
                 return new YdbSchemaResult($status);
             } else {
                 $res = $this->session->query($sql);
+                return new YdbResult($res);
             }
-            $this->session->commit();
-        } catch (\Throwable $exception) {
-
-            try {
-                $this->session->rollBack();
-            } catch (\Throwable) {}
-
-            throw $exception;
-        }
-
-        return new YdbResult($res);
+        });
     }
 }

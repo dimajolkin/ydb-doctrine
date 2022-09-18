@@ -6,6 +6,7 @@ use Dimajolkin\YdbDoctrine\Platform\Keywords;
 use Doctrine\DBAL\Exception;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Schema\TableDiff;
+use Symfony\Component\Validator\Constraints\DateTime;
 use YandexCloud\Ydb\Ydb;
 
 class YdbPlatform extends AbstractPlatform
@@ -54,6 +55,11 @@ class YdbPlatform extends AbstractPlatform
     public function getDateTimeTzTypeDeclarationSQL(array $column)
     {
         return 'Datetime';
+    }
+
+    public function getDateTimeFormatString()
+    {
+        return \DateTime::ISO8601;
     }
 
     public function getBooleanTypeDeclarationSQL(array $column)

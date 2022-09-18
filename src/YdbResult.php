@@ -22,12 +22,12 @@ class YdbResult implements Result
         return $list;
     }
 
-    public function fetchAssociative()
+    public function fetchAssociative(): array|false
     {
         return $this->queryResult->rows()[0] ?? false;
     }
 
-    public function fetchOne()
+    public function fetchOne(): mixed
     {
         return $this->queryResult->value();
     }

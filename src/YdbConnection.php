@@ -28,7 +28,8 @@ class YdbConnection implements Connection, ServerInfoAwareConnection
 
     public function prepare(string $sql): Statement
     {
-        return new YdbStatement($this, $sql, $this->ydb->table()->session());
+        $this->session = $this->ydb->table()->session();
+        return new YdbStatement($this, $sql, $this->session);
     }
 
     public function query(string $sql): Result
@@ -39,11 +40,9 @@ class YdbConnection implements Connection, ServerInfoAwareConnection
     public function quote($value, $type = ParameterType::STRING)
     {
         if ($type === ParameterType::STRING) {
-            $value = pg_escape_string($value);
-
             return "'$value'";
         }
-
+        
         return $value;
     }
 
@@ -59,19 +58,21 @@ class YdbConnection implements Connection, ServerInfoAwareConnection
 
     public function beginTransaction()
     {
-//        $this->session?->beginTransaction();
+        $this->session?->beginTransaction();
         return true;
     }
 
     public function commit()
     {
-//        $this->session?->commit();
+        $this->session?->commit();
         return true;
     }
 
     public function rollBack()
     {
-//        $this->session?->rollBack();
+        try {
+            $this->session?->rollBack();
+        } catch (\Throwable) {}
         return true;
     }
 }

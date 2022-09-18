@@ -3,16 +3,22 @@
 namespace Dimajolkin\YdbDoctrine;
 
 use Dimajolkin\YdbDoctrine\SchemaManager\YdbSchemaManager;
+use Dimajolkin\YdbDoctrine\Type\DateTimeImmutableType;
+use Dimajolkin\YdbDoctrine\Type\DateTimeType;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Driver;
 use Doctrine\DBAL\Driver\API\ExceptionConverter;
 use Doctrine\DBAL\Driver\Connection as DriverConnection;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
+use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
+use Symfony\Component\Validator\Constraints\DateTime;
 use YandexCloud\Ydb\Ydb;
 
 class YdbDriver implements Driver
 {
     private ?Ydb $ydb = null;
+    private ?YdbPlatform $platform = null;
 
     public function connect(array $params): DriverConnection
     {
@@ -26,12 +32,15 @@ class YdbDriver implements Driver
         ];
 
         $this->ydb = new Ydb($config);
+
+        Type::overrideType(Types::DATETIME_MUTABLE, DateTimeType::class);
+        
         return new YdbConnection($this->ydb);
     }
 
     public function getDatabasePlatform()
     {
-        return new YdbPlatform($this->ydb);
+        return $this->platform ?: $this->platform = new YdbPlatform($this->ydb);
     }
 
     public function getSchemaManager(Connection $conn, AbstractPlatform $platform)
