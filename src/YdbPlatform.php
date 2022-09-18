@@ -59,6 +59,11 @@ class YdbPlatform extends AbstractPlatform
         return 'Datetime';
     }
 
+    public function getDateTypeDeclarationSQL(array $column)
+    {
+        return 'Date';
+    }
+
     /**
      * {@inheritDoc}
      */

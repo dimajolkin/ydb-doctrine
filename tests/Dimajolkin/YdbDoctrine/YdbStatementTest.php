@@ -2,6 +2,7 @@
 
 namespace Dimajolkin\YdbDoctrine;
 
+use Dimajolkin\YdbDoctrine\Yql\YqlFixer;
 use Doctrine\DBAL\ParameterType;
 use PHPUnit\Framework\TestCase;
 use YandexCloud\Ydb\Session;
@@ -52,5 +53,15 @@ class YdbStatementTest extends TestCase
     public function testRegex()
     {
         $this->assertEquals('DoctrineMigrations\Version20220918090353, ?', preg_replace('/\?/', 'DoctrineMigrations\Version20220918090353', '?, ?', 1));
+    }
+
+
+    public function testOrderByFixed(): void
+    {
+        $fixed = new YqlFixer();
+        $this->assertEquals(
+            'select name as name1 form table order by name1 desc',
+            $fixed->fixed('select name as name1 form table order by name desc')
+        );
     }
 }
