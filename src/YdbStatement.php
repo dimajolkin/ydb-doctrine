@@ -56,9 +56,6 @@ class YdbStatement implements Statement
                 $status = $this->session->schemeQuery($sql);
                 return new YdbSchemaResult($status);
             } else {
-                if (str_starts_with($sql, 'INSERT')) {
-                    dd($sql, $this->bindValues, $this->sql);
-                }
                 $res = $this->session->query($sql);
                 return new YdbResult($res);
             }
