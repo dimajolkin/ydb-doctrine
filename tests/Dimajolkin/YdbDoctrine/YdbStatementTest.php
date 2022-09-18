@@ -22,7 +22,7 @@ class YdbStatementTest extends TestCase
         $this->assertEquals('INSERT INTO my_table (name, value, age) VALUES (\'name\', \'value\', 23)', $statement->getRawSql());
     }
 
-    public function testString()
+    public function testString(): void
     {
         $ydb = $this->createMock(Ydb::class);
         $connect = new YdbConnection($ydb);

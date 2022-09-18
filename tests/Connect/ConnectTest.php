@@ -15,6 +15,7 @@ class ConnectTest extends TestCase
     {
         return DriverManager::getConnection([
             'driverClass' => \Dimajolkin\YdbDoctrine\YdbDriver::class,
+            'wrapperClass' => \Dimajolkin\YdbDoctrine\ConnectWrapper::class
         ]);
     }
 
@@ -44,19 +45,17 @@ class ConnectTest extends TestCase
     public function testSelectTable(): void
     {
         $this->assertEquals(1,  $this->query('select id, name from my_table')->fetchOne());
-        $this->assertEquals([['id' => 1, 'name' => 'dima'], ['id' => 2, 'name' => 'nadia']],  $this->query('select id, name from my_table')->fetchAllAssociative());
-
-
+        $this->assertEquals([['id' => 1, 'name' => 'dima'], ['id' => 2, 'name' => 'nadia']],  $this->query('select id, name from my_table where id in (1, 2)')->fetchAllAssociative());
     }
 
     public function testInsert()
     {
         $conn = $this->ydbConnect();
-        $conn->delete('my_table', ['name' => 'ivan']);
-        $this->assertEquals(false,  $this->query('select id, name from my_table where name = \'ivan\'')->fetchAssociative());
-        $data = ['id' => 6, 'name' => 'ivan'];
-        $conn->insert('my_table', $data, ['id' => ParameterType::INTEGER]);
-        $this->assertEquals($data,  $this->query('select id, name from my_table where name = \'ivan\'')->fetchAssociative());
+        $conn->delete('my_table', ['name' => 'ivan/test']);
+        $this->assertEquals(false,  $this->query('select id, name from my_table where name = \'ivan\/test\'')->fetchAssociative());
+        $data = ['id' => 7, 'name' => 'ivan/test'];
+        $conn->insert('my_table', $data, ['id' => ParameterType::INTEGER, 'name' => ParameterType::STRING]);
+        $this->assertEquals($data,  $this->query('select id, name from my_table where name = \'ivan\/test\'')->fetchAssociative());
     }
 
     public function testCreateTableMigration()
