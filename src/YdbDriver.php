@@ -33,9 +33,14 @@ class YdbDriver implements Driver
 
         $this->ydb = new Ydb($config);
 
-        Type::overrideType(Types::DATETIME_MUTABLE, DateTimeType::class);
-        
+        $this->configureType();
+
         return new YdbConnection($this->ydb);
+    }
+
+    public function configureType(): void
+    {
+        Type::overrideType(Types::DATETIME_MUTABLE, DateTimeType::class);
     }
 
     public function getDatabasePlatform()

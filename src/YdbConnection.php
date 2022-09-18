@@ -40,8 +40,8 @@ class YdbConnection implements Connection, ServerInfoAwareConnection
     public function quote($value, $type = ParameterType::STRING)
     {
         if ($type === ParameterType::STRING) {
-            $value2 = addslashes($value);
-            return "'$value2'";
+            $value = addslashes(addslashes($value));
+            return "'$value'";
         }
 
         return $value;

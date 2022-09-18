@@ -6,6 +6,7 @@ use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Schema\AbstractSchemaManager;
 use Doctrine\DBAL\Schema\Column;
+use Doctrine\DBAL\Schema\Index;
 use Doctrine\DBAL\Schema\TableDiff;
 use Doctrine\DBAL\Types\StringType;
 use Doctrine\DBAL\Types\Type;
@@ -30,7 +31,7 @@ class YdbSchemaManager extends AbstractSchemaManager
     private function bindType(string $type): Type
     {
         return match ($type) {
-            'STRING' => Type::getType(Types::BINARY),
+            'STRING' => Type::getType(Types::STRING),
             'UTF8' => Type::getType(Types::STRING),
             'JSON' => Type::getType(Types::JSON),
             'DATETIME' => Type::getType(Types::DATETIME_MUTABLE),
@@ -64,7 +65,11 @@ class YdbSchemaManager extends AbstractSchemaManager
 
     public function listTableIndexes($table): array
     {
-        return [];
+        $data = $this->ydb->table()->session()->describeTable($table);
+        $indexes = [];
+        $columns = $data['primaryKey'];
+        $indexes[] = new Index('primary', $columns, true, true, [], []);
+        return $indexes;
     }
 
     public function alterTable(TableDiff $tableDiff): void
