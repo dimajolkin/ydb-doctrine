@@ -15,7 +15,11 @@ class YdbPlatform extends AbstractPlatform
     {
         return 'String';
     }
-    
+
+    public function getJsonTypeDeclarationSQL(array $column)
+    {
+        return 'Json';
+    }
 
     public function getAlterTableSQL(TableDiff $diff)
     {
@@ -49,7 +53,7 @@ class YdbPlatform extends AbstractPlatform
      */
     public function getDateTimeTzTypeDeclarationSQL(array $column)
     {
-        return 'TzDateTime';
+        return 'Datetime';
     }
 
     public function getBooleanTypeDeclarationSQL(array $column)
@@ -80,47 +84,47 @@ class YdbPlatform extends AbstractPlatform
     protected function initializeDoctrineTypeMappings()
     {
         $this->doctrineTypeMapping = [
-            'bigint'           => 'bigint',
-            'bigserial'        => 'bigint',
-            'bool'             => 'boolean',
-            'boolean'          => 'boolean',
-            'bpchar'           => 'string',
-            'bytea'            => 'blob',
-            'char'             => 'string',
-            'date'             => 'date',
-            'datetime'         => 'datetime',
-            'decimal'          => 'decimal',
-            'double'           => 'float',
-            'double precision' => 'float',
-            'float'            => 'float',
-            'float4'           => 'float',
-            'float8'           => 'float',
-            'inet'             => 'string',
-            'int'              => 'integer',
-            'int2'             => 'smallint',
-            'int4'             => 'integer',
-            'int8'             => 'bigint',
-            'integer'          => 'integer',
-            'interval'         => 'string',
-            'json'             => 'json',
-            'jsonb'            => 'json',
-            'money'            => 'decimal',
-            'numeric'          => 'decimal',
-            'serial'           => 'integer',
-            'serial4'          => 'integer',
-            'serial8'          => 'bigint',
-            'real'             => 'float',
-            'smallint'         => 'smallint',
-            'text'             => 'text',
-            'time'             => 'time',
-            'timestamp'        => 'datetime',
-            'timestamptz'      => 'datetimetz',
-            'timetz'           => 'time',
-            'tsvector'         => 'text',
-            'uuid'             => 'guid',
-            'varchar'          => 'string',
-            'year'             => 'date',
-            '_varchar'         => 'string',
+//            'bigint'           => 'bigint',
+//            'bigserial'        => 'bigint',
+//            'bool'             => 'boolean',
+//            'boolean'          => 'boolean',
+//            'bpchar'           => 'string',
+//            'bytea'            => 'blob',
+//            'char'             => 'string',
+//            'date'             => 'date',
+//            'datetime'         => 'datetime',
+//            'decimal'          => 'decimal',
+//            'double'           => 'float',
+//            'double precision' => 'float',
+//            'float'            => 'float',
+//            'float4'           => 'float',
+//            'float8'           => 'float',
+//            'inet'             => 'string',
+//            'int'              => 'integer',
+//            'int2'             => 'smallint',
+//            'int4'             => 'integer',
+//            'int8'             => 'bigint',
+//            'integer'          => 'integer',
+//            'interval'         => 'string',
+//            'json'             => 'json',
+//            'jsonb'            => 'json',
+//            'money'            => 'decimal',
+//            'numeric'          => 'decimal',
+//            'serial'           => 'integer',
+//            'serial4'          => 'integer',
+//            'serial8'          => 'bigint',
+//            'real'             => 'float',
+//            'smallint'         => 'smallint',
+//            'text'             => 'text',
+//            'time'             => 'time',
+//            'timestamp'        => 'datetime',
+//            'timestamptz'      => 'datetimetz',
+//            'timetz'           => 'time',
+//            'tsvector'         => 'text',
+//            'uuid'             => 'guid',
+//            'varchar'          => 'string',
+//            'year'             => 'date',
+//            '_varchar'         => 'string',
         ];
     }
 

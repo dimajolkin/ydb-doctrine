@@ -31,6 +31,7 @@ class YdbSchemaManager extends AbstractSchemaManager
     {
         return match ($type) {
             'STRING' => Type::getType(Types::STRING),
+            'JSON' => Type::getType(Types::JSON),
             'DATETIME' => Type::getType(Types::DATETIME_MUTABLE),
             'INT32' => Type::getType(Types::INTEGER),
             default => throw new \Exception("$type not support"),
@@ -49,7 +50,7 @@ class YdbSchemaManager extends AbstractSchemaManager
                 $notnull = false;
             }
 
-            $list[] = new Column($column['name'], $this->bindType($type), ['notnul' => $notnull]);
+            $list[] = new Column($column['name'], $this->bindType($type), ['notnull' => $notnull]);
         }
 
         return $list;
