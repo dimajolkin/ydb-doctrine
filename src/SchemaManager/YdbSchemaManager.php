@@ -30,7 +30,8 @@ class YdbSchemaManager extends AbstractSchemaManager
     private function bindType(string $type): Type
     {
         return match ($type) {
-            'STRING' => Type::getType(Types::STRING),
+            'STRING' => Type::getType(Types::BINARY),
+            'UTF8' => Type::getType(Types::STRING),
             'JSON' => Type::getType(Types::JSON),
             'DATETIME' => Type::getType(Types::DATETIME_MUTABLE),
             'INT32' => Type::getType(Types::INTEGER),

@@ -32,6 +32,7 @@ class ConnectWrapper extends Connection
             $set[]     = $param;
         }
 
+
         return $this->executeStatement(
             'INSERT INTO ' . $table . ' (' . implode(', ', $columns) . ')' .
             ' VALUES (' . implode(', ', $set) . ')',

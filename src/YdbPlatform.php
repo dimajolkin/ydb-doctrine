@@ -14,7 +14,7 @@ class YdbPlatform extends AbstractPlatform
 
     protected function getVarcharTypeDeclarationSQLSnippet($length, $fixed/*, $lengthOmitted = false*/)
     {
-        return 'String';
+        return 'Utf8';
     }
 
     public function getJsonTypeDeclarationSQL(array $column)
@@ -59,7 +59,7 @@ class YdbPlatform extends AbstractPlatform
 
     public function getDateTimeFormatString()
     {
-        return \DateTime::ISO8601;
+        return 'Y-m-d H:i:s';
     }
 
     public function getBooleanTypeDeclarationSQL(array $column)

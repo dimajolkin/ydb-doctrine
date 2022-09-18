@@ -24,7 +24,7 @@ class DateTimeType extends Type
 
     public function convertToDatabaseValueSQL($sqlExpr, AbstractPlatform $platform)
     {
-        return 'DateTime::ParseIso8601(?)';
+        return 'DateTime::MakeDate(DateTime::ParseIso8601(?))';
     }
 
     /**

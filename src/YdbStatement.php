@@ -8,6 +8,7 @@ use Doctrine\DBAL\Driver\Statement;
 use Doctrine\DBAL\ParameterType;
 use Doctrine\DBAL\Types\Types;
 use YandexCloud\Ydb\Session;
+use Ydb\Type;
 use function PHPUnit\Framework\throwException;
 
 class YdbStatement implements Statement
@@ -27,7 +28,7 @@ class YdbStatement implements Statement
     public function bindValue($param, $value, $type = ParameterType::STRING): bool
     {
         $this->bindValues[$param] = [$value, $type];
-        
+
         return true;
     }
 
@@ -40,7 +41,7 @@ class YdbStatement implements Statement
     {
         $rawSql = $this->sql;
         foreach ($this->bindValues as $param => [$value, $type]) {
-            $rawSql = preg_replace("/\?/", $this->connection->quote($value, $type), $rawSql, 1);
+            $rawSql = preg_replace('/\?/', $this->connection->quote($value, $type), $rawSql, 1);
         }
 
         return $rawSql;
@@ -49,12 +50,15 @@ class YdbStatement implements Statement
     public function execute($params = null): Result
     {
         $sql = $this->getRawSql();
-        
+
         return $this->session->transaction(function () use ($sql) {
             if (str_starts_with($sql, 'CREATE')) {
                 $status = $this->session->schemeQuery($sql);
                 return new YdbSchemaResult($status);
             } else {
+                if (str_starts_with($sql, 'INSERT')) {
+                    dd($sql, $this->bindValues, $this->sql);
+                }
                 $res = $this->session->query($sql);
                 return new YdbResult($res);
             }

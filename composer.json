@@ -5,11 +5,6 @@
             "Dimajolkin\\YdbDoctrine\\": "src/"
         }
     },
-    "autoload-dev": {
-        "psr-4": {
-            "Dimajolkin\\YdbDoctrine\\Tests": "src/"
-        }
-    },
     "authors": [
         {
             "name": "dimajolkin",

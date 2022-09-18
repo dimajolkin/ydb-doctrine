@@ -21,4 +21,15 @@ class YdbStatementTest extends TestCase
 
         $this->assertEquals('INSERT INTO my_table (name, value, age) VALUES (\'name\', \'value\', 23)', $statement->getRawSql());
     }
+
+    public function testString()
+    {
+        $ydb = $this->createMock(Ydb::class);
+        $connect = new YdbConnection($ydb);
+        $session = $this->createMock(Session::class);
+        $statement = new YdbStatement($connect, 'INSERT INTO my_table (name) VALUES (?)', $session);
+        $statement->bindValue(1, 'name\test2');
+
+        $this->assertEquals("INSERT INTO my_table (name) VALUES ('name\\test2')", $statement->getRawSql());
+    }
 }
