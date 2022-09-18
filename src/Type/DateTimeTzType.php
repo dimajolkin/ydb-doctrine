@@ -7,14 +7,14 @@ use Doctrine\DBAL\Types\ConversionException;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\DBAL\Types\Types;
 
-class DateTimeImmutableType extends Type
+class DateTimeTzType extends Type
 {
     /**
      * {@inheritdoc}
      */
     public function getName()
     {
-        return Types::DATETIME_IMMUTABLE;
+        return Types::DATETIMETZ_MUTABLE;
     }
 
     public function canRequireSQLConversion()
@@ -22,6 +22,10 @@ class DateTimeImmutableType extends Type
         return true;
     }
 
+    public function convertToDatabaseValueSQL($sqlExpr, AbstractPlatform $platform)
+    {
+        return 'DateTime::MakeDate(DateTime::ParseIso8601(?))';
+    }
 
     /**
      * {@inheritdoc}
@@ -40,9 +44,7 @@ class DateTimeImmutableType extends Type
             return $value;
         }
 
-        dd($value);
-        if ($value instanceof \DateTimeImmutable) {
-            dd($value);
+        if ($value instanceof \DateTimeInterface) {
             return $value->format($platform->getDateTimeFormatString());
         }
 
@@ -54,9 +56,7 @@ class DateTimeImmutableType extends Type
      */
     public function convertToPHPValue($value, AbstractPlatform $platform)
     {
-        
-        dd($value);
-        if ($value === null || $value instanceof \DateTimeImmutable) {
+        if ($value === null || $value instanceof DateTimeInterface) {
             return $value;
         }
 

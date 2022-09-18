@@ -44,6 +44,10 @@ class YdbConnection implements Connection, ServerInfoAwareConnection
             return "'$value'";
         }
 
+        if ($type === ParameterType::BOOLEAN) {
+            return $type ? 'true' : 'false';
+        }
+
         return $value;
     }
 

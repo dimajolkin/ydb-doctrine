@@ -3,9 +3,13 @@
 namespace Dimajolkin\YdbDoctrine;
 
 use Dimajolkin\YdbDoctrine\Platform\Keywords;
+use Dimajolkin\YdbDoctrine\Type\DateTimeType;
+use Dimajolkin\YdbDoctrine\Type\DateTimeTzType;
 use Doctrine\DBAL\Exception;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Schema\TableDiff;
+use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 use Symfony\Component\Validator\Constraints\DateTime;
 use YandexCloud\Ydb\Ydb;
 
@@ -29,7 +33,13 @@ class YdbPlatform extends AbstractPlatform
 
     public function supportsSequences()
     {
+        // false
         return true;
+    }
+
+    public function convertBooleansToDatabaseValue($item)
+    {
+        return (bool) $item;
     }
 
 
@@ -89,49 +99,7 @@ class YdbPlatform extends AbstractPlatform
 
     protected function initializeDoctrineTypeMappings()
     {
-        $this->doctrineTypeMapping = [
-//            'bigint'           => 'bigint',
-//            'bigserial'        => 'bigint',
-//            'bool'             => 'boolean',
-//            'boolean'          => 'boolean',
-//            'bpchar'           => 'string',
-//            'bytea'            => 'blob',
-//            'char'             => 'string',
-//            'date'             => 'date',
-//            'datetime'         => 'datetime',
-//            'decimal'          => 'decimal',
-//            'double'           => 'float',
-//            'double precision' => 'float',
-//            'float'            => 'float',
-//            'float4'           => 'float',
-//            'float8'           => 'float',
-//            'inet'             => 'string',
-//            'int'              => 'integer',
-//            'int2'             => 'smallint',
-//            'int4'             => 'integer',
-//            'int8'             => 'bigint',
-//            'integer'          => 'integer',
-//            'interval'         => 'string',
-//            'json'             => 'json',
-//            'jsonb'            => 'json',
-//            'money'            => 'decimal',
-//            'numeric'          => 'decimal',
-//            'serial'           => 'integer',
-//            'serial4'          => 'integer',
-//            'serial8'          => 'bigint',
-//            'real'             => 'float',
-//            'smallint'         => 'smallint',
-//            'text'             => 'text',
-//            'time'             => 'time',
-//            'timestamp'        => 'datetime',
-//            'timestamptz'      => 'datetimetz',
-//            'timetz'           => 'time',
-//            'tsvector'         => 'text',
-//            'uuid'             => 'guid',
-//            'varchar'          => 'string',
-//            'year'             => 'date',
-//            '_varchar'         => 'string',
-        ];
+        $this->doctrineTypeMapping = [];
     }
 
     public function getClobTypeDeclarationSQL(array $column)

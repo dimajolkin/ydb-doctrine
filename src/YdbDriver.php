@@ -5,6 +5,7 @@ namespace Dimajolkin\YdbDoctrine;
 use Dimajolkin\YdbDoctrine\SchemaManager\YdbSchemaManager;
 use Dimajolkin\YdbDoctrine\Type\DateTimeImmutableType;
 use Dimajolkin\YdbDoctrine\Type\DateTimeType;
+use Dimajolkin\YdbDoctrine\Type\DateTimeTzType;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Driver;
 use Doctrine\DBAL\Driver\API\ExceptionConverter;
@@ -33,14 +34,7 @@ class YdbDriver implements Driver
 
         $this->ydb = new Ydb($config);
 
-        $this->configureType();
-
         return new YdbConnection($this->ydb);
-    }
-
-    public function configureType(): void
-    {
-        Type::overrideType(Types::DATETIME_MUTABLE, DateTimeType::class);
     }
 
     public function getDatabasePlatform()

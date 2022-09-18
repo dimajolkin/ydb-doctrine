@@ -56,7 +56,6 @@ class YdbStatement implements Statement
                 $status = $this->session->schemeQuery($sql);
                 return new YdbSchemaResult($status);
             } else {
-
                 $res = $this->session->query($sql);
                 return new YdbResult($res);
             }
