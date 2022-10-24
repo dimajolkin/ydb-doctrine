@@ -2,13 +2,17 @@
 
 namespace Dimajolkin\YdbDoctrine;
 
+use Dimajolkin\YdbDoctrine\Excepion\GenerateSqlException;
 use Doctrine\DBAL\Driver\Exception;
 use Doctrine\DBAL\Driver\Result;
 use Doctrine\DBAL\Driver\Statement;
+use Doctrine\DBAL\Exception\SyntaxErrorException;
 use Doctrine\DBAL\ParameterType;
 use Doctrine\DBAL\Types\Types;
 use YandexCloud\Ydb\Session;
 use Ydb\Type;
+use Ydb\TypedValue;
+use Ydb\Value;
 use function PHPUnit\Framework\throwException;
 
 class YdbStatement implements Statement
@@ -16,6 +20,7 @@ class YdbStatement implements Statement
 
     /** @var array<int, array<mixed, string> */
     private array $bindValues = [];
+    private array $parameters = [];
 
     public function __construct(
         private YdbConnection $connection,
@@ -40,11 +45,40 @@ class YdbStatement implements Statement
     public function getRawSql(): string
     {
         $rawSql = $this->sql;
+        $index = 1;
+        $declareSql = [];
         foreach ($this->bindValues as $param => [$value, $type]) {
-            $rawSql = preg_replace('/\?/', $this->connection->quote($value, $type), $rawSql, 1);
+            $name = '$col' . $index++;
+            //            $rawSql = preg_replace('/\?/', $this->connection->quote($value, $type), $rawSql, 1);
+            $rawSql = preg_replace('/\?/', $name, $rawSql, 1);
+            $type = $this->makeYdbType($value, $type);
+            $this->parameters[$name] = $type;
+            $declareSql[] = sprintf("DECLARE $name AS %s;\n", Type\PrimitiveTypeId::name($type->getType()->getTypeId()));
         }
 
-        return $rawSql;
+        return implode($declareSql) . '' . $rawSql;
+    }
+
+    private function makeYdbType($value, $type): TypedValue
+    {
+        if ($type === ParameterType::STRING) {
+            return new TypedValue([
+                'type' => new Type(['type_id' => Type\PrimitiveTypeId::UTF8]),
+                'value' => new Value(['text_value' => (string) $value]),
+            ]);
+        } elseif ($type === ParameterType::INTEGER) {
+            return new TypedValue([
+                'type' => new Type(['type_id' => Type\PrimitiveTypeId::INT32]),
+                'value' => new Value(['int32_value' => (int) $value]),
+            ]);
+        } elseif ($type === ParameterType::BOOLEAN) {
+            return new TypedValue([
+                'type' => new Type(['type_id' => Type\PrimitiveTypeId::BOOL]),
+                'value' => new Value(['bool_value' => !!$value]),
+            ]);
+        }
+
+        throw new \Exception();
     }
 
     public function execute($params = null): Result
@@ -57,7 +91,7 @@ class YdbStatement implements Statement
                 return new YdbSchemaResult($status);
             } else {
                 try {
-                    $res = $this->session->query($sql);
+                    $res = $this->session->query($sql, $this->parameters);
                 } catch (\Exception $ex) {
                     throw new \Exception($sql . "\n" . ' Details: ' . $ex->getMessage(), previous: $ex);
                 }

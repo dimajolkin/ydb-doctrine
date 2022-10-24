@@ -21,6 +21,11 @@ class YdbPlatform extends AbstractPlatform
         return 'Utf8';
     }
 
+    protected function getBinaryTypeDeclarationSQLSnippet($length, $fixed)
+    {
+        return 'String';
+    }
+
     public function getJsonTypeDeclarationSQL(array $column)
     {
         return 'Json';

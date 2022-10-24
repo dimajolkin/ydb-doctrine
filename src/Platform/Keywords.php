@@ -109,7 +109,6 @@ class Keywords extends KeywordList
             'TRUE',
             'UNION',
             'UNIQUE',
-            'USER',
             'USING',
             'VARIADIC',
             'VERBOSE',

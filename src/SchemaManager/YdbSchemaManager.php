@@ -36,6 +36,9 @@ class YdbSchemaManager extends AbstractSchemaManager
             'JSON' => Type::getType(Types::JSON),
             'DATETIME' => Type::getType(Types::DATETIME_MUTABLE),
             'INT32' => Type::getType(Types::INTEGER),
+            'BOOL' => Type::getType(Types::BOOLEAN),
+            'DATE' => Type::getType(Types::DATETIME_MUTABLE),
+            'FLOAT' => Type::getType(Types::FLOAT),
             default => throw new \Exception("$type not support"),
         };
     }

@@ -4,6 +4,7 @@ namespace Dimajolkin\YdbDoctrine;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\ParameterType;
 
 class ConnectWrapper extends Connection
 {
@@ -23,15 +24,15 @@ class ConnectWrapper extends Connection
             $columns[] = $columnName;
             $values[]  = $value;
             $param = '?';
-            if (isset($types[$index])) {
-                $doctrineType = Type::getType($types[$index]);
+            $type = $types[$index] ?? $types[$columnName] ?? null;
+            if ($type && Type::hasType($type)) {
+                $doctrineType = Type::getType($type);
                 if ($doctrineType->canRequireSQLConversion()) {
                     $param = $doctrineType->convertToDatabaseValueSQL('?', $this->getDatabasePlatform());
                 }
             }
             $set[]     = $param;
         }
-
 
         return $this->executeStatement(
             'INSERT INTO ' . $table . ' (' . implode(', ', $columns) . ')' .
@@ -44,7 +45,6 @@ class ConnectWrapper extends Connection
     private function extractTypeValues(array $columnList, array $types): array
     {
         $typeValues = [];
-
         foreach ($columnList as $columnName) {
             $typeValues[] = $types[$columnName] ?? ParameterType::STRING;
         }

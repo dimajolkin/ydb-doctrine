@@ -56,11 +56,11 @@ class DateTimeType extends Type
      */
     public function convertToPHPValue($value, AbstractPlatform $platform)
     {
-        if ($value === null || $value instanceof DateTimeInterface) {
+        if ($value === null || $value instanceof \DateTimeInterface) {
             return $value;
         }
 
-        $val = DateTime::createFromFormat($platform->getDateTimeFormatString(), $value);
+        $val = \DateTime::createFromFormat($platform->getDateTimeFormatString(), $value);
 
         if ($val === false) {
             $val = date_create($value);
