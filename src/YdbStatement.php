@@ -56,7 +56,11 @@ class YdbStatement implements Statement
                 $status = $this->session->schemeQuery($sql);
                 return new YdbSchemaResult($status);
             } else {
-                $res = $this->session->query($sql);
+                try {
+                    $res = $this->session->query($sql);
+                } catch (\Exception $ex) {
+                    throw new \Exception($sql . "\n" . ' Details: ' . $ex->getMessage(), previous: $ex);
+                }
                 return new YdbResult($res);
             }
         });

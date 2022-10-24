@@ -37,11 +37,22 @@ class YdbPlatform extends AbstractPlatform
         return true;
     }
 
-    public function convertBooleansToDatabaseValue($item)
+    public function convertBooleans($item)
     {
-        return (bool) $item;
-    }
+        if (is_array($item)) {
+            foreach ($item as $k => $value) {
+                if (! is_bool($value)) {
+                    continue;
+                }
 
+                $item[$k] = $value ? 'true' : 'false';
+            }
+        } elseif (is_bool($item)) {
+            $item = $item ? 'true' : 'false';
+        }
+
+        return $item;
+    }
 
     /**
      * Нет DEFAULT
@@ -115,6 +126,11 @@ class YdbPlatform extends AbstractPlatform
     public function getBlobTypeDeclarationSQL(array $column)
     {
         return 'String';
+    }
+
+    public function getFloatDeclarationSQL(array $column)
+    {
+        return 'Float';
     }
 
     public function getName()
