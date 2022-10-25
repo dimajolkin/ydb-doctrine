@@ -2,29 +2,29 @@
 
 namespace Dimajolkin\YdbDoctrine;
 
+use Doctrine\DBAL\Cache\ArrayResult;
 use Doctrine\DBAL\Driver\Exception;
 use Doctrine\DBAL\Driver\Result;
 use YandexCloud\Ydb\QueryResult;
 
 class YdbResult implements Result
 {
+    private ArrayResult $result;
+
     public function __construct(
         private QueryResult $queryResult
-    ) {}
+    ) {
+        $this->result = new ArrayResult($this->queryResult->rows());
+    }
 
     public function fetchNumeric()
     {
-        $list = [];
-        foreach ($this->queryResult->rows() as $row) {
-            $list[] = array_values($row)[0];
-        }
-
-        return $list;
+        return $this->result->fetchNumeric();
     }
 
     public function fetchAssociative(): array|false
     {
-        return $this->queryResult->rows()[0] ?? false;
+        return $this->result->fetchAssociative();
     }
 
     public function fetchOne(): mixed
@@ -34,28 +34,17 @@ class YdbResult implements Result
 
     public function fetchAllNumeric(): array
     {
-        $list = [];
-        foreach ($this->queryResult->rows() as $row) {
-            $list[] = array_values($row);
-        }
-
-        return $list;
+        return $this->result->fetchAllNumeric();
     }
 
     public function fetchAllAssociative(): array
     {
-        return $this->queryResult->rows();
+        return $this->result->fetchAllAssociative();
     }
 
     public function fetchFirstColumn(): array
     {
-        foreach ($this->queryResult->rows() as $row) {
-            return [
-                array_values($row)[0]
-            ];
-        }
-
-        return [];
+        return $this->result->fetchFirstColumn();
     }
 
     public function rowCount(): int
@@ -70,6 +59,6 @@ class YdbResult implements Result
 
     public function free(): void
     {
-
+        $this->result->free();;
     }
 }
