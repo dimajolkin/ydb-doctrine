@@ -4,6 +4,8 @@ namespace Dimajolkin\YdbDoctrine;
 
 use Dimajolkin\YdbDoctrine\Yql\YqlFixer;
 use Doctrine\DBAL\ParameterType;
+use Doctrine\DBAL\Schema\Table;
+use Doctrine\DBAL\Types\Types;
 use PHPUnit\Framework\TestCase;
 use YandexCloud\Ydb\Session;
 use YandexCloud\Ydb\Ydb;
@@ -105,4 +107,5 @@ class YdbStatementTest extends TestCase
             $fixed->fixed('select name as name1 form table order by name desc')
         );
     }
+
 }

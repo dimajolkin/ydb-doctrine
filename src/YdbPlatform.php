@@ -3,6 +3,7 @@
 namespace Dimajolkin\YdbDoctrine;
 
 use Dimajolkin\YdbDoctrine\Platform\Keywords;
+use Dimajolkin\YdbDoctrine\Type\BoolType;
 use Dimajolkin\YdbDoctrine\Type\DateTimeType;
 use Dimajolkin\YdbDoctrine\Type\DateTimeTzType;
 use Doctrine\DBAL\Exception;
@@ -15,6 +16,10 @@ use YandexCloud\Ydb\Ydb;
 
 class YdbPlatform extends AbstractPlatform
 {
+    protected function initializeCommentedDoctrineTypes(): void
+    {
+        $this->doctrineTypeMapping[YdbTypes::BOOL] = new BoolType();
+    }
 
     protected function getVarcharTypeDeclarationSQLSnippet($length, $fixed/*, $lengthOmitted = false*/)
     {

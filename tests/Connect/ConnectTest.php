@@ -3,10 +3,12 @@
 namespace Dimajolkin\YdbDoctrine\Tests\Connect;
 
 use Dimajolkin\YdbDoctrine\YdbResult;
+use Dimajolkin\YdbDoctrine\YdbTypes;
 use Doctrine\DBAL\DriverManager;
 use Doctrine\DBAL\ParameterType;
 use Doctrine\DBAL\Result;
 use Doctrine\DBAL\Schema\Table;
+use Doctrine\DBAL\Types\Types;
 use PHPUnit\Framework\TestCase;
 
 class ConnectTest extends TestCase
@@ -62,5 +64,18 @@ class ConnectTest extends TestCase
     {
         $sql = 'CREATE TABLE doctrine_migration_versions2 (version String NOT NULL, executed_at Datetime, execution_time Int32, PRIMARY KEY(version));';
         $this->query($sql);
+    }
+
+
+    public function testTable(): void
+    {
+        $conn = $this->ydbConnect();
+        $conn->getDatabasePlatform();
+
+        $table = new Table('test_columns');
+        $table->addColumn('id', Types::STRING);
+        $table->addColumn('bool', YdbTypes::BOOL, ['notnull' => false]);
+
+        $table->setPrimaryKey(['id']);
     }
 }
