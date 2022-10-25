@@ -22,3 +22,23 @@ doctrine:
         wrapper_class: \Dimajolkin\YdbDoctrine\ConnectWrapper
 
 ```
+
+
+Генерация таблиц
+
+```php
+ use Doctrine\DBAL\Schema\Table;
+
+ $table1 = new Table('event_bonuses');
+ $table1->addColumn('event_id', Types::STRING);
+ $table1->addColumn('event_bonuses_id', Types::STRING);
+ $table1->setPrimaryKey(['event_id', 'event_bonuses_id']);
+ $this->connection->createSchemaManager()->createTable($table1);
+
+ $table2 = new Table('event');
+ $table2->addColumn('id', Types::STRING);
+ $table2->addColumn('name', Types::STRING, ['notnull' => false]); // Если колонка не в PR то обязательно not null!
+ $table2->setPrimaryKey(['id']);
+ $this->connection->createSchemaManager()->createTable($table2);
+
+```
