@@ -2,6 +2,7 @@
 
 namespace Dimajolkin\YdbDoctrine\Type;
 
+use Dimajolkin\YdbDoctrine\ParameterType;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\ConversionException;
 use Doctrine\DBAL\Types\Type;
@@ -17,6 +18,14 @@ class DateTimeTzType extends Type
         return Types::DATETIMETZ_MUTABLE;
     }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function getSQLDeclaration(array $column, AbstractPlatform $platform)
+    {
+        return $platform->getDateTimeTypeDeclarationSQL($column);
+    }
+
     public function canRequireSQLConversion()
     {
         return true;
@@ -24,15 +33,7 @@ class DateTimeTzType extends Type
 
     public function convertToDatabaseValueSQL($sqlExpr, AbstractPlatform $platform)
     {
-        return 'DateTime::MakeDate(DateTime::ParseIso8601(?))';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getSQLDeclaration(array $column, AbstractPlatform $platform)
-    {
-        return $platform->getDateTimeTypeDeclarationSQL($column);
+        return "CAST($sqlExpr as Datetime)";
     }
 
     /**
@@ -45,10 +46,15 @@ class DateTimeTzType extends Type
         }
 
         if ($value instanceof \DateTimeInterface) {
-            return $value->format($platform->getDateTimeFormatString());
+            return $value->getTimestamp();
         }
 
         throw ConversionException::conversionFailedInvalidType($value, $this->getName(), ['null', 'DateTime']);
+    }
+
+    public function getBindingType()
+    {
+        return ParameterType::DATETIME;
     }
 
     /**
