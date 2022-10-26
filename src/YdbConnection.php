@@ -2,7 +2,9 @@
 
 namespace Dimajolkin\YdbDoctrine;
 
+use Dimajolkin\YdbDoctrine\Parser\YdbUriParser;
 use Doctrine\DBAL\Driver\Connection;
+use Doctrine\DBAL\Driver\Connection as DriverConnection;
 use Doctrine\DBAL\Driver\Exception;
 use Doctrine\DBAL\Driver\Result;
 use Doctrine\DBAL\Driver\Statement;
@@ -19,6 +21,19 @@ class YdbConnection implements Connection, ServerInfoAwareConnection
     public function __construct(
         private Ydb $ydb
     ) {
+    }
+
+    public static function makeConnectionByUrl(string $dbUri): YdbConnection
+    {
+        $config = (new YdbUriParser())->parse($dbUri);
+        $ydb = new Ydb($config);
+
+        return new YdbConnection($ydb);
+    }
+
+    public function getYdb(): Ydb
+    {
+        return $this->ydb;
     }
 
     public function getServerVersion()

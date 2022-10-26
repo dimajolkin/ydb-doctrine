@@ -20,19 +20,18 @@ use YandexCloud\Ydb\Ydb;
 class YdbDriver implements Driver
 {
     private ?Ydb $ydb = null;
-    private ?YdbPlatform $platform = null;
 
     public function connect(array $params): DriverConnection
     {
         $dbUri = $params['driverOptions']['YBD_URL'] ?? throw new \Exception();
-        $config = (new YdbUriParser())->parse($dbUri);
-        $this->ydb = new Ydb($config);
         $this->overrideBaseTypes();
+        $connect = YdbConnection::makeConnectionByUrl($dbUri);
+        $this->ydb = $connect->getYdb();
 
-        return new YdbConnection($this->ydb);
+        return $connect;
     }
 
-    private function overrideBaseTypes(): void
+    private static function overrideBaseTypes(): void
     {
         Type::overrideType(Types::DATETIME_MUTABLE, new DateTimeType());
         Type::overrideType(Types::DATETIMETZ_MUTABLE, new DateTimeTzType());
@@ -42,7 +41,7 @@ class YdbDriver implements Driver
 
     public function getDatabasePlatform()
     {
-        return $this->platform ?: $this->platform = new YdbPlatform($this->ydb);
+        return new YdbPlatform();
     }
 
     public function getSchemaManager(Connection $conn, AbstractPlatform $platform)

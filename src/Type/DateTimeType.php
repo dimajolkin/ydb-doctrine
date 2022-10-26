@@ -51,7 +51,7 @@ class DateTimeType extends Type
         }
 
         if ($value instanceof \DateTimeInterface) {
-            return $value->getTimestamp();
+            return $value;
         }
 
         throw ConversionException::conversionFailedInvalidType($value, $this->getName(), ['null', 'DateTime']);

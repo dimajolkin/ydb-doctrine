@@ -18,7 +18,17 @@ class YdbPlatform extends AbstractPlatform
 {
     protected function initializeCommentedDoctrineTypes(): void
     {
-        $this->doctrineTypeMapping[YdbTypes::BOOL] = new BoolType();
+
+    }
+
+    public function hasNativeGuidType(): bool
+    {
+        return true;
+    }
+
+    public function getGuidTypeDeclarationSQL(array $column)
+    {
+        return 'Uuid';
     }
 
     protected function getVarcharTypeDeclarationSQLSnippet($length, $fixed/*, $lengthOmitted = false*/)
