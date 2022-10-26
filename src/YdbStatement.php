@@ -3,6 +3,7 @@
 namespace Dimajolkin\YdbDoctrine;
 
 use Dimajolkin\YdbDoctrine\Excepion\GenerateSqlException;
+use Dimajolkin\YdbDoctrine\Yql\YqlFixer;
 use Doctrine\DBAL\Driver\Result;
 use Doctrine\DBAL\Driver\Statement;
 use Doctrine\DBAL\ParameterType;
@@ -28,7 +29,9 @@ class YdbStatement implements Statement
         private YdbConnection $connection,
         private string $sql,
         private Session $session,
-    ) {}
+    ) {
+        $this->sql = (new YqlFixer())->fixed($this->sql);
+    }
 
     public function bindValue($param, $value, $type = ParameterType::STRING): bool
     {
@@ -52,10 +55,11 @@ class YdbStatement implements Statement
                 $rawSql = preg_replace('/\?/', 'NULL', $rawSql, 1);
             } else {
                 $name = '$col'.$index++;
-                $rawSql = preg_replace('/\?/', $name, $rawSql, 1);
                 $type = $this->makeYdbType($value, $type);
+                $typeName = Type\PrimitiveTypeId::name($type->getType()->getTypeId());
+                $rawSql = preg_replace('/\?/', $name, $rawSql, 1);
                 $this->parameters[$name] = $type;
-                $declareSql[] = sprintf("DECLARE $name AS %s;\n",  Type\PrimitiveTypeId::name($type->getType()->getTypeId()));
+                $declareSql[] = sprintf("DECLARE $name AS %s;\n",  $typeName);
             }
         }
 
@@ -97,7 +101,6 @@ class YdbStatement implements Statement
             try {
                 if (str_starts_with($sql, 'CREATE')) {
                     $status = $this->session->schemeQuery($sql);
-
                     return new YdbSchemaResult($status);
                 }
                 else {
@@ -105,7 +108,6 @@ class YdbStatement implements Statement
                     return new YdbResult($res);
                 }
             } catch (\Exception|\Throwable $ex) {
-                dd($this->sql);
                 throw new \Exception($sql."\n".' Details: '.$ex->getMessage(), previous: $ex);
             }
         });
