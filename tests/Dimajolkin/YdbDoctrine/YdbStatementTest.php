@@ -107,5 +107,4 @@ class YdbStatementTest extends TestCase
             $fixed->fixed('select name as name1 form table order by name desc')
         );
     }
-
 }

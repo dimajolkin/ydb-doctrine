@@ -6,6 +6,7 @@ use Dimajolkin\YdbDoctrine\Parser\YdbUriParser;
 use Dimajolkin\YdbDoctrine\SchemaManager\YdbSchemaManager;
 use Dimajolkin\YdbDoctrine\Type\DateTimeType;
 use Dimajolkin\YdbDoctrine\Type\DateTimeTzType;
+use Dimajolkin\YdbDoctrine\Type\DecimalType;
 use Dimajolkin\YdbDoctrine\Type\FloatType;
 use Dimajolkin\YdbDoctrine\Type\JsonType;
 use Doctrine\DBAL\Connection;
@@ -33,10 +34,11 @@ class YdbDriver implements Driver
 
     private static function overrideBaseTypes(): void
     {
-        Type::overrideType(Types::DATETIME_MUTABLE, new DateTimeType());
-        Type::overrideType(Types::DATETIMETZ_MUTABLE, new DateTimeTzType());
-        Type::overrideType(Types::FLOAT, new FloatType());
-        Type::overrideType(Types::JSON, new JsonType());
+        Type::overrideType(Types::DATETIME_MUTABLE, DateTimeType::class);
+        Type::overrideType(Types::DATETIMETZ_MUTABLE, DateTimeTzType::class);
+        Type::overrideType(Types::FLOAT, FloatType::class);
+        Type::overrideType(Types::JSON, JsonType::class);
+        Type::overrideType(Types::DECIMAL, DecimalType::class);
     }
 
     public function getDatabasePlatform()

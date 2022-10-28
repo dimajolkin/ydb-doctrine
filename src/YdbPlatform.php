@@ -21,6 +21,11 @@ class YdbPlatform extends AbstractPlatform
 
     }
 
+    public function getDecimalTypeDeclarationSQL(array $column): string
+    {
+        return 'decimal';
+    }
+
     public function hasNativeGuidType(): bool
     {
         return true;

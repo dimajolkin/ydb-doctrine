@@ -90,6 +90,9 @@ class YdbStatement implements Statement
         elseif ($type === \Dimajolkin\YdbDoctrine\ParameterType::FLOAT) {
             return $this->typeValue($value, 'FLOAT')->toTypedValue();
         }
+        elseif ($type === \Dimajolkin\YdbDoctrine\ParameterType::DECIMAL) {
+            return $this->typeValue($value, 'FLOAT')->toTypedValue();
+        }
         throw new \Exception();
     }
 
