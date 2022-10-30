@@ -75,6 +75,14 @@ class YdbStatement implements Statement
             return $this->typeValue((int) $value, 'INT32')->toTypedValue();
         }
         elseif ($type === ParameterType::BOOLEAN) {
+            if ($value === 'true') {
+                $value = true;
+            } elseif ($value === 'false') {
+                $value = false;
+            } else {
+                throw new \Exception("Undefined bool value equals $value");
+            }
+
             return $this->typeValue($value, 'BOOL')->toTypedValue();
         }
         elseif ($type === \Dimajolkin\YdbDoctrine\ParameterType::DATETIME) {
