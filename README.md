@@ -11,9 +11,6 @@ DATABASE_URL="ydb://localhost:2136/local?discovery=false&iam_config[anonymous]=t
 Пример настройки Symfony
 
 ```yaml
-services:
-    ydb-quote-strategy:
-        class: Dimajolkin\YdbDoctrine\ORM\QuoteStrategy
 doctrine:
     dbal:
         options:
@@ -37,7 +34,7 @@ doctrine:
 
  $table2 = new Table('event');
  $table2->addColumn('id', Types::STRING);
- $table2->addColumn('name', Types::STRING, ['notnull' => false]); // Если колонка не в PR то обязательно not null!
+ $table2->addColumn('name', Types::STRING, ['notnull' => false]); // Если колонка не в PK то обязательно not null!
  $table2->setPrimaryKey(['id']);
  $this->connection->createSchemaManager()->createTable($table2);
 
