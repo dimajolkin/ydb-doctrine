@@ -12,7 +12,7 @@
         }
     ],
     "require": {
-        "yandex-cloud/ydb-php-sdk": "dev-anonymous",
+        "yandex-cloud/ydb-php-sdk": "dev-master",
         "doctrine/orm": "^2.13"
     },
     "require-dev": {
@@ -22,7 +22,7 @@
     "repositories": [
         {
             "type": "vcs",
-            "url": "git@github.com:bashkarev/ydb-php-sdk.git"
+            "url": "git@github.com:dimajolkin/ydb-php-sdk.git"
         }
     ]
 }
