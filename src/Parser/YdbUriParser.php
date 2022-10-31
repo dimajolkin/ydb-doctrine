@@ -21,6 +21,7 @@ class YdbUriParser
         array_walk_recursive($query, fn (&$value) => match ($value) {
             'true' => $value = true,
             'false' => $value = false,
+            default => $value,
         });
 
         return [
