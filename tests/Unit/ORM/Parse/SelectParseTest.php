@@ -30,7 +30,7 @@ class SelectParseTest extends AbstractParseTest
         $qb->select('u')->from(User::class, 'u')->orderBy('u.id', 'ASC');
 
         $this->assertEquals('SELECT u FROM Dimajolkin\YdbDoctrine\Tests\App\Entity\User u ORDER BY u.id ASC', $qb->getDQL());
-        $this->assertEquals('SELECT u0_.id AS id_0 FROM user u0_ ORDER BY u0_.id_0 ASC', $qb->getQuery()->getSQL());
+        $this->assertEquals('SELECT u0_.id AS id_0 FROM user u0_ ORDER BY id_0 ASC', $qb->getQuery()->getSQL());
     }
 
     public function testOrderByWithLimit(): void
@@ -45,7 +45,7 @@ class SelectParseTest extends AbstractParseTest
             ->setMaxResults(20);
 
         $this->assertEquals('SELECT DISTINCT u, u.id FROM Dimajolkin\YdbDoctrine\Tests\App\Entity\User u ORDER BY u.id ASC', $qb->getDQL());
-        $this->assertEquals('SELECT DISTINCT u0_.id AS id_0, u0_.id AS id_1 FROM user u0_ ORDER BY u0_.id_0 ASC LIMIT 20', $qb->getQuery()->getSQL());
+        $this->assertEquals('SELECT DISTINCT u0_.id AS id_0, u0_.id AS id_1 FROM user u0_ ORDER BY id_0 ASC LIMIT 20', $qb->getQuery()->getSQL());
     }
 
 
@@ -53,11 +53,11 @@ class SelectParseTest extends AbstractParseTest
     {
         $em = $this->makeEntityManager();
         $query = $em->createQuery('SELECT entity FROM Dimajolkin\YdbDoctrine\Tests\App\Entity\User entity ORDER BY entity.id DESC');
-        $this->assertEquals('SELECT u0_.id AS id_0 FROM user u0_ ORDER BY u0_.id_0 DESC', $query->getSQL());
+        $this->assertEquals('SELECT u0_.id AS id_0 FROM user u0_ ORDER BY id_0 DESC', $query->getSQL());
 
         $cloneQuery = clone $query;
         $cloneQuery->setMaxResults(10);
         $cloneQuery->setFirstResult(11);
-        $this->assertEquals('SELECT u0_.id AS id_0 FROM user u0_ ORDER BY u0_.id_0 DESC LIMIT 10 OFFSET 11', $cloneQuery->getSQL());
+        $this->assertEquals('SELECT u0_.id AS id_0 FROM user u0_ ORDER BY id_0 DESC LIMIT 10 OFFSET 11', $cloneQuery->getSQL());
     }
 }

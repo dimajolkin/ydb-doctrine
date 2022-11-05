@@ -28,22 +28,13 @@ class YdbWalker extends SqlWalker
         foreach ($this->resultSetMapping->fieldMappings as $fieldAlias => $fieldName) {
             if ($fieldName === $columnName) {
                 if ($this->resultSetMapping->columnOwnerMap[$fieldAlias] === $tableAlias) {
-                    $classMetaData = $this->getMetadataForDqlAlias($tableAlias);
-                    $entityAlias = $this->resultSetMapping->getEntityAlias($fieldAlias);
-                    $tableName = $classMetaData->getTableName();
-                    $doctrineTableAlias = $this->getSQLTableAlias($tableName, $entityAlias);
-
-                    return $doctrineTableAlias.'.'.$fieldAlias;
+                    return $fieldAlias;
                 }
             }
         }
 
         if ($fieldAlias = $this->setter->getValue('scalarFields')[$tableAlias][$columnName] ?? null) {
-            $classMetaData = $this->getMetadataForDqlAlias($tableAlias);
-            $tableName = $classMetaData->getTableName();
-            $doctrineTableAlias = $this->getSQLTableAlias($tableName, $tableAlias);
-
-            return $doctrineTableAlias.'.'.$fieldAlias;
+            return $fieldAlias;
         }
 
         return null;
