@@ -11,13 +11,18 @@ DATABASE_URL="ydb://localhost:2136/local?discovery=false&iam_config[anonymous]=t
 Пример настройки Symfony
 
 ```yaml
+parameters:
+  doctrine.orm.entity_manager.class: \Dimajolkin\YdbDoctrine\ORM\EntityManager
+
 doctrine:
     dbal:
         options:
             YBD_URL: '%env(resolve:DATABASE_URL)%'
         driver_class: \Dimajolkin\YdbDoctrine\YdbDriver
         wrapper_class: \Dimajolkin\YdbDoctrine\ConnectWrapper
-
+    dql:
+      string_functions:
+        rand: App\Infrastructure\Doctrine\Functions\Rand
 ```
 
 
@@ -39,3 +44,7 @@ doctrine:
  $this->connection->createSchemaManager()->createTable($table2);
 
 ```
+
+ Функции
+
+1. RAND(columnName) 
