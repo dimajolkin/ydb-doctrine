@@ -30,7 +30,7 @@ class YdbStatement implements Statement
         private string $sql,
         private Session $session,
     ) {
-        $this->sql = (new YqlFixer())->fixed($this->sql);
+//        $this->sql = (new YqlFixer())->fixed($this->sql);
     }
 
     public function bindValue($param, $value, $type = ParameterType::STRING): bool

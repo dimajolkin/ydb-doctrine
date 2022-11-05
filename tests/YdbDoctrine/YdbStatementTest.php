@@ -1,11 +1,12 @@
 <?php
 
-namespace Dimajolkin\YdbDoctrine;
+namespace YdbDoctrine;
 
+use Dimajolkin\YdbDoctrine\YdbConnection;
+use Dimajolkin\YdbDoctrine\YdbDriver;
+use Dimajolkin\YdbDoctrine\YdbStatement;
 use Dimajolkin\YdbDoctrine\Yql\YqlFixer;
 use Doctrine\DBAL\ParameterType;
-use Doctrine\DBAL\Schema\Table;
-use Doctrine\DBAL\Types\Types;
 use PHPUnit\Framework\TestCase;
 use YandexCloud\Ydb\Session;
 use YandexCloud\Ydb\Ydb;
