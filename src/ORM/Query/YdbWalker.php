@@ -23,7 +23,7 @@ class YdbWalker extends SqlWalker
         parent::__construct($query, $parserResult, $queryComponents);
     }
 
-    private function getAliasByColumn(string $tableAlias, string $columnName): string
+    private function getAliasByColumn(string $tableAlias, string $columnName): ?string
     {
         foreach ($this->resultSetMapping->fieldMappings as $fieldAlias => $fieldName) {
             if ($fieldName === $columnName) {
@@ -37,12 +37,24 @@ class YdbWalker extends SqlWalker
                 }
             }
         }
-        throw new \Exception();
+
+        if ($fieldAlias = $this->setter->getValue('scalarFields')[$tableAlias][$columnName] ?? null) {
+            $classMetaData = $this->getMetadataForDqlAlias($tableAlias);
+            $tableName = $classMetaData->getTableName();
+            $doctrineTableAlias = $this->getSQLTableAlias($tableName, $tableAlias);
+
+            return $doctrineTableAlias.'.'.$fieldAlias;
+        }
+
+        return null;
     }
 
     public function walkRandExpression(RandExpression $randExpression): string
     {
         $field = $this->getAliasByColumn($randExpression->getTableAlias(), $randExpression->getColumnName());
+        if (!$field) {
+            throw new \Exception();
+        }
 
         return 'RANDOM('.$field.')';
     }
@@ -61,10 +73,12 @@ class YdbWalker extends SqlWalker
         $expr = $orderByItem->expression;
         if ($expr instanceof AST\Node) {
             if ($expr instanceof PathExpression) {
-                $field = $this->getAliasByColumn($expr->identificationVariable, $expr->field);
-                $sql = $field;
-            }
-            else {
+                if ($field = $this->getAliasByColumn($expr->identificationVariable, $expr->field)) {
+                    $sql = $field;
+                } else {
+                    $sql = $expr->dispatch($this);
+                }
+            } else {
                 $sql = $expr->dispatch($this);
             }
         }

@@ -2,24 +2,17 @@
 
 namespace Dimajolkin\YdbDoctrine;
 
-use Dimajolkin\YdbDoctrine\Excepion\GenerateSqlException;
-use Dimajolkin\YdbDoctrine\Yql\YqlFixer;
 use Doctrine\DBAL\Driver\Result;
 use Doctrine\DBAL\Driver\Statement;
 use Doctrine\DBAL\ParameterType;
-use Google\Protobuf\NullValue;
 use YandexCloud\Ydb\Session;
 use YandexCloud\Ydb\Traits\TypeValueHelpersTrait;
-use YandexCloud\Ydb\Types\DatetimeType;
-use YandexCloud\Ydb\Types\IntType;
 use Ydb\Type;
 use Ydb\TypedValue;
-use Ydb\Value;
 
 class YdbStatement implements Statement
 {
     use TypeValueHelpersTrait;
-
 
     /** @var array<int, array<mixed, string> */
     private array $bindValues = [];
@@ -30,7 +23,6 @@ class YdbStatement implements Statement
         private string $sql,
         private Session $session,
     ) {
-//        $this->sql = (new YqlFixer())->fixed($this->sql);
     }
 
     public function bindValue($param, $value, $type = ParameterType::STRING): bool
@@ -53,13 +45,14 @@ class YdbStatement implements Statement
         foreach ($this->bindValues as $param => [$value, $type]) {
             if ($value === null) {
                 $rawSql = preg_replace('/\?/', 'NULL', $rawSql, 1);
-            } else {
+            }
+            else {
                 $name = '$col'.$index++;
                 $type = $this->makeYdbType($value, $type);
                 $typeName = Type\PrimitiveTypeId::name($type->getType()->getTypeId());
                 $rawSql = preg_replace('/\?/', $name, $rawSql, 1);
                 $this->parameters[$name] = $type;
-                $declareSql[] = sprintf("DECLARE $name AS %s;\n",  $typeName);
+                $declareSql[] = sprintf("DECLARE $name AS %s;\n", $typeName);
             }
         }
 
@@ -77,9 +70,11 @@ class YdbStatement implements Statement
         elseif ($type === ParameterType::BOOLEAN) {
             if ($value === 'true') {
                 $value = true;
-            } elseif ($value === 'false') {
+            }
+            elseif ($value === 'false') {
                 $value = false;
-            } else {
+            }
+            else {
                 throw new \Exception("Undefined bool value equals $value");
             }
 
@@ -107,20 +102,19 @@ class YdbStatement implements Statement
     public function execute($params = null): Result
     {
         $sql = $this->getRawSql();
+        try {
+            if (str_starts_with($sql, 'CREATE')) {
+                $status = $this->session->schemeQuery($sql);
 
-        return $this->session->transaction(function () use ($sql) {
-            try {
-                if (str_starts_with($sql, 'CREATE')) {
-                    $status = $this->session->schemeQuery($sql);
-                    return new YdbSchemaResult($status);
-                }
-                else {
-                    $res = $this->session->prepare($sql)->execute($this->parameters);
-                    return new YdbResult($res);
-                }
-            } catch (\Exception|\Throwable $ex) {
-                throw new \Exception($sql."\n".' Details: '.$ex->getMessage(), previous: $ex);
+                return new YdbSchemaResult($status);
             }
-        });
+            else {
+                $res = $this->session->prepare($sql)->execute($this->parameters);
+
+                return new YdbResult($res);
+            }
+        } catch (\Exception|\Throwable $ex) {
+            throw new \Exception($sql."\n".' Details: '.$ex->getMessage(), previous: $ex);
+        }
     }
 }

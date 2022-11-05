@@ -14,6 +14,11 @@ use YandexCloud\Ydb\Session;
 use YandexCloud\Ydb\Table;
 use YandexCloud\Ydb\Ydb;
 
+/**
+ * Версия файла без final атрибота и с другим классом Parser
+ */
+include_once __DIR__ . '/../doctrine/Query.php';
+
 class YdbConnection implements Connection, ServerInfoAwareConnection
 {
     private ?Session $session = null;

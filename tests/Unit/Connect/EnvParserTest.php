@@ -1,6 +1,6 @@
 <?php
 
-namespace Connect;
+namespace Dimajolkin\YdbDoctrine\Tests\Unit\Connect;
 
 use Dimajolkin\YdbDoctrine\Parser\YdbUriParser;
 use PHPUnit\Framework\TestCase;

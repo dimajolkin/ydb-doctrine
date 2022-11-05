@@ -1,9 +1,10 @@
 <?php
 
-namespace Dimajolkin\YdbDoctrine\Tests\ORM\Parse;
+namespace Dimajolkin\YdbDoctrine\Tests\Unit\ORM\Parse;
 
 use Dimajolkin\YdbDoctrine\ORM\EntityManager;
 use Dimajolkin\YdbDoctrine\ORM\Functions\Rand;
+use Dimajolkin\YdbDoctrine\YdbConnection;
 use Dimajolkin\YdbDoctrine\YdbPlatform;
 use Doctrine\Common\EventManager;
 use Doctrine\DBAL\Connection;
@@ -15,6 +16,7 @@ abstract class AbstractParseTest extends TestCase
 {
     protected function makeEntityManager(): EntityManager
     {
+        $this->createMock(YdbConnection::class);
         $connect = $this->createMock(Connection::class);
         $connect->method('getDatabasePlatform')->willReturn(new YdbPlatform());
         $connect->method('getEventManager')->willReturn(new EventManager());

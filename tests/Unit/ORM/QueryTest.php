@@ -1,9 +1,8 @@
 <?php
 
-namespace Dimajolkin\YdbDoctrine\Tests\ORM;
+namespace Dimajolkin\YdbDoctrine\Tests\Unit\ORM;
 
 use Dimajolkin\YdbDoctrine\ORM\Query;
-use Doctrine\ORM\AbstractQuery;
 use PHPUnit\Framework\TestCase;
 
 class QueryTest extends TestCase
