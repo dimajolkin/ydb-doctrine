@@ -4,20 +4,12 @@ namespace Dimajolkin\YdbDoctrine;
 
 use Dimajolkin\YdbDoctrine\Parser\YdbUriParser;
 use Doctrine\DBAL\Driver\Connection;
-use Doctrine\DBAL\Driver\Connection as DriverConnection;
-use Doctrine\DBAL\Driver\Exception;
 use Doctrine\DBAL\Driver\Result;
-use Doctrine\DBAL\Driver\Statement;
 use Doctrine\DBAL\Driver\ServerInfoAwareConnection;
+use Doctrine\DBAL\Driver\Statement;
 use Doctrine\DBAL\ParameterType;
 use YandexCloud\Ydb\Session;
-use YandexCloud\Ydb\Table;
 use YandexCloud\Ydb\Ydb;
-
-/**
- * Версия файла без final атрибота и с другим классом Parser
- */
-include_once __DIR__ . '/../doctrine/Query.php';
 
 class YdbConnection implements Connection, ServerInfoAwareConnection
 {
