@@ -1,5 +1,10 @@
 ## НЕ использовать
 
+
+```bash
+    composer require dimajolkin/ydb-doctrine:dev-master
+```
+
 Пишется для проверки возможности запуска в маленьком проекте 
 
 ```bash
