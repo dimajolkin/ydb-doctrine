@@ -17,17 +17,11 @@
         }
     ],
     "require": {
-        "yandex-cloud/ydb-php-sdk": "dev-master",
-        "doctrine/orm": "^2.13"
+        "doctrine/orm": "^2.13",
+        "dimajolkin/fix-ydb-php-sdk": "dev-main"
     },
     "require-dev": {
         "symfony/var-dumper": "^6.1",
         "phpunit/phpunit": "^9.5"
-    },
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "git@github.com:dimajolkin/ydb-php-sdk.git"
-        }
-    ]
+    }
 }

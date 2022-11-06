@@ -4,8 +4,59 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ac5e2d7737416f811ca2e2f4f256d205",
+    "content-hash": "a666042983a0737f6883976d291fb36e",
     "packages": [
+        {
+            "name": "dimajolkin/fix-ydb-php-sdk",
+            "version": "dev-main",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/dimajolkin/ydb-php-sdk.git",
+                "reference": "c1fd71eac51b9ec356fccefb01fa8f75921b98e8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/dimajolkin/ydb-php-sdk/zipball/c1fd71eac51b9ec356fccefb01fa8f75921b98e8",
+                "reference": "c1fd71eac51b9ec356fccefb01fa8f75921b98e8",
+                "shasum": ""
+            },
+            "require": {
+                "ext-bcmath": "*",
+                "ext-curl": "*",
+                "ext-grpc": "*",
+                "ext-json": "*",
+                "google/protobuf": "~3.15.8",
+                "grpc/grpc": "^1.35",
+                "lcobucci/jwt": "^4.1.5",
+                "php": ">=7.0",
+                "phpseclib/phpseclib": "^2.0|^3.0",
+                "psr/log": "^1|^2|^3"
+            },
+            "default-branch": true,
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Ydb\\": "protos/Ydb/",
+                    "GPBMetadata\\": "protos/GPBMetadata/",
+                    "YandexCloud\\Ydb\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "Alexei Shabalin",
+                    "email": "mail@alshabalin.com"
+                }
+            ],
+            "description": "Yandex Database SDK (PHP)",
+            "support": {
+                "source": "https://github.com/dimajolkin/ydb-php-sdk/tree/main"
+            },
+            "time": "2022-11-06T12:51:28+00:00"
+        },
         {
             "name": "doctrine/cache",
             "version": "2.2.0",
@@ -1498,30 +1549,30 @@
         },
         {
             "name": "psr/log",
-            "version": "1.1.4",
+            "version": "3.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-fig/log.git",
-                "reference": "d49695b909c3b7628b6289db5479a1c204601f11"
+                "reference": "fe5ea303b0887d5caefd3d431c3e61ad47037001"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-fig/log/zipball/d49695b909c3b7628b6289db5479a1c204601f11",
-                "reference": "d49695b909c3b7628b6289db5479a1c204601f11",
+                "url": "https://api.github.com/repos/php-fig/log/zipball/fe5ea303b0887d5caefd3d431c3e61ad47037001",
+                "reference": "fe5ea303b0887d5caefd3d431c3e61ad47037001",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3.0"
+                "php": ">=8.0.0"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.1.x-dev"
+                    "dev-master": "3.x-dev"
                 }
             },
             "autoload": {
                 "psr-4": {
-                    "Psr\\Log\\": "Psr/Log/"
+                    "Psr\\Log\\": "src"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -1542,9 +1593,9 @@
                 "psr-3"
             ],
             "support": {
-                "source": "https://github.com/php-fig/log/tree/1.1.4"
+                "source": "https://github.com/php-fig/log/tree/3.0.0"
             },
-            "time": "2021-05-03T11:20:27+00:00"
+            "time": "2021-07-14T16:46:02+00:00"
         },
         {
             "name": "stella-maris/clock",
@@ -2414,55 +2465,6 @@
                 }
             ],
             "time": "2022-10-10T09:34:31+00:00"
-        },
-        {
-            "name": "yandex-cloud/ydb-php-sdk",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/dimajolkin/ydb-php-sdk.git",
-                "reference": "d36974c1f1f4c539fa6a10723bd36cc786f99f49"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/dimajolkin/ydb-php-sdk/zipball/d36974c1f1f4c539fa6a10723bd36cc786f99f49",
-                "reference": "d36974c1f1f4c539fa6a10723bd36cc786f99f49",
-                "shasum": ""
-            },
-            "require": {
-                "ext-bcmath": "*",
-                "ext-curl": "*",
-                "ext-grpc": "*",
-                "ext-json": "*",
-                "google/protobuf": "~3.15.8",
-                "grpc/grpc": "^1.35",
-                "lcobucci/jwt": "^4.1.5",
-                "php": ">=7.0",
-                "phpseclib/phpseclib": "^2.0|^3.0",
-                "psr/log": "~1.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Ydb\\": "protos/Ydb/",
-                    "GPBMetadata\\": "protos/GPBMetadata/",
-                    "YandexCloud\\Ydb\\": "src/"
-                }
-            },
-            "license": [
-                "Apache-2.0"
-            ],
-            "authors": [
-                {
-                    "name": "Alexei Shabalin",
-                    "email": "mail@alshabalin.com"
-                }
-            ],
-            "description": "Yandex Database SDK (PHP)",
-            "support": {
-                "source": "https://github.com/dimajolkin/ydb-php-sdk/tree/main"
-            },
-            "time": "2022-02-25T11:07:21+00:00"
         }
     ],
     "packages-dev": [
@@ -4218,7 +4220,7 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "yandex-cloud/ydb-php-sdk": 20
+        "dimajolkin/fix-ydb-php-sdk": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,
