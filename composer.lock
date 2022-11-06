@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a666042983a0737f6883976d291fb36e",
+    "content-hash": "672df740d1b7fd484813fdf79ec406f9",
     "packages": [
         {
-            "name": "dimajolkin/fix-ydb-php-sdk",
+            "name": "dimajolkin/ydb-php-sdk",
             "version": "dev-main",
             "source": {
                 "type": "git",
                 "url": "https://github.com/dimajolkin/ydb-php-sdk.git",
-                "reference": "c1fd71eac51b9ec356fccefb01fa8f75921b98e8"
+                "reference": "145f3c8c292b499be6fa47bb4b30ba7ecb0deb61"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/dimajolkin/ydb-php-sdk/zipball/c1fd71eac51b9ec356fccefb01fa8f75921b98e8",
-                "reference": "c1fd71eac51b9ec356fccefb01fa8f75921b98e8",
+                "url": "https://api.github.com/repos/dimajolkin/ydb-php-sdk/zipball/145f3c8c292b499be6fa47bb4b30ba7ecb0deb61",
+                "reference": "145f3c8c292b499be6fa47bb4b30ba7ecb0deb61",
                 "shasum": ""
             },
             "require": {
@@ -55,7 +55,7 @@
             "support": {
                 "source": "https://github.com/dimajolkin/ydb-php-sdk/tree/main"
             },
-            "time": "2022-11-06T12:51:28+00:00"
+            "time": "2022-11-06T14:58:14+00:00"
         },
         {
             "name": "doctrine/cache",
@@ -4220,7 +4220,7 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "dimajolkin/fix-ydb-php-sdk": 20
+        "dimajolkin/ydb-php-sdk": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,

@@ -61,13 +61,16 @@ class YdbStatement implements Statement
 
     private function makeYdbType($value, $type): TypedValue
     {
-        if ($type === ParameterType::STRING) {
+        if ($type === \Dimajolkin\YdbDoctrine\ParameterType::STRING) {
             return $this->typeValue((string) $value, 'UTF8')->toTypedValue();
         }
-        elseif ($type === ParameterType::INTEGER) {
+        elseif ($type === \Dimajolkin\YdbDoctrine\ParameterType::BINARY) {
+            return $this->typeValue((string) $value, 'STRING')->toTypedValue();
+        }
+        elseif ($type === \Dimajolkin\YdbDoctrine\ParameterType::INTEGER) {
             return $this->typeValue((int) $value, 'INT32')->toTypedValue();
         }
-        elseif ($type === ParameterType::BOOLEAN) {
+        elseif ($type === \Dimajolkin\YdbDoctrine\ParameterType::BOOLEAN) {
             if ($value === 'true') {
                 $value = true;
             }
@@ -96,7 +99,16 @@ class YdbStatement implements Statement
         elseif ($type === \Dimajolkin\YdbDoctrine\ParameterType::DECIMAL) {
             return $this->typeValue($value, 'FLOAT')->toTypedValue();
         }
-        throw new \Exception();
+        elseif ($type === \Dimajolkin\YdbDoctrine\ParameterType::TIMESTAMP) {
+            return $this->typeValue($value, 'TIMESTAMP')->toTypedValue();
+        }
+        elseif ($type === \Dimajolkin\YdbDoctrine\ParameterType::UINT32) {
+            return $this->typeValue($value, 'UINT32')->toTypedValue();
+        }
+        elseif ($type === \Dimajolkin\YdbDoctrine\ParameterType::UINT64) {
+            return $this->typeValue($value, 'UINT64')->toTypedValue();
+        }
+        throw new \Exception("$type, $value not support");
     }
 
     public function execute($params = null): Result

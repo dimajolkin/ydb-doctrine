@@ -18,7 +18,7 @@
     ],
     "require": {
         "doctrine/orm": "^2.13",
-        "dimajolkin/fix-ydb-php-sdk": "dev-main"
+        "dimajolkin/ydb-php-sdk": "dev-main"
     },
     "require-dev": {
         "symfony/var-dumper": "^6.1",
