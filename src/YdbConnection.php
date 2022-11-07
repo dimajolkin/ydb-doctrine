@@ -8,6 +8,7 @@ use Doctrine\DBAL\Driver\Result;
 use Doctrine\DBAL\Driver\ServerInfoAwareConnection;
 use Doctrine\DBAL\Driver\Statement;
 use Doctrine\DBAL\ParameterType;
+use Psr\Log\LoggerInterface;
 use YandexCloud\Ydb\Session;
 use YandexCloud\Ydb\Ydb;
 
@@ -17,13 +18,12 @@ class YdbConnection implements Connection, ServerInfoAwareConnection
 
     public function __construct(
         private Ydb $ydb
-    ) {
-    }
+    ) { }
 
-    public static function makeConnectionByUrl(string $dbUri): YdbConnection
+    public static function makeConnectionByUrl(string $dbUri, LoggerInterface $logger = null): YdbConnection
     {
         $config = (new YdbUriParser())->parse($dbUri);
-        $ydb = new Ydb($config);
+        $ydb = new Ydb($config, $logger);
 
         return new YdbConnection($ydb);
     }
