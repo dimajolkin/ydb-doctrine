@@ -13,12 +13,12 @@ class DateTimeType extends Type
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getName(): string
     {
         return Types::DATETIME_MUTABLE;
     }
 
-    public function getBindingType()
+    public function getBindingType(): int
     {
         return ParameterType::DATETIME;
     }
@@ -26,17 +26,17 @@ class DateTimeType extends Type
     /**
      * {@inheritdoc}
      */
-    public function getSQLDeclaration(array $column, AbstractPlatform $platform)
+    public function getSQLDeclaration(array $column, AbstractPlatform $platform): string
     {
         return $platform->getDateTimeTypeDeclarationSQL($column);
     }
 
-    public function canRequireSQLConversion()
+    public function canRequireSQLConversion(): bool
     {
         return true;
     }
 
-    public function convertToDatabaseValueSQL($sqlExpr, AbstractPlatform $platform)
+    public function convertToDatabaseValueSQL($sqlExpr, AbstractPlatform $platform): string
     {
         return "CAST($sqlExpr as Datetime)";
     }
@@ -44,7 +44,7 @@ class DateTimeType extends Type
     /**
      * {@inheritdoc}
      */
-    public function convertToDatabaseValue($value, AbstractPlatform $platform)
+    public function convertToDatabaseValue(mixed $value, AbstractPlatform $platform): mixed
     {
         if ($value === null) {
             return $value;
@@ -60,7 +60,7 @@ class DateTimeType extends Type
     /**
      * {@inheritdoc}
      */
-    public function convertToPHPValue($value, AbstractPlatform $platform)
+    public function convertToPHPValue(mixed $value, AbstractPlatform $platform): mixed
     {
         if ($value === null || $value instanceof \DateTimeInterface) {
             return $value;

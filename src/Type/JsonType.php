@@ -12,7 +12,7 @@ class JsonType extends \Doctrine\DBAL\Types\JsonType
         return ParameterType::JSON;
     }
 
-    public function convertToPHPValue($value, AbstractPlatform $platform)
+    public function convertToPHPValue(mixed $value, AbstractPlatform $platform): mixed
     {
         if (!$value) {
             return null;

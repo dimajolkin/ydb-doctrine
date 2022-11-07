@@ -8,7 +8,7 @@ use Doctrine\DBAL\ParameterType;
 
 class ConnectWrapper extends Connection
 {
-    public function insert($table, array $data, array $types = [])
+    public function insert($table, array $data, array $types = []): int|string
     {
         if (count($data) === 0) {
             return $this->executeStatement('INSERT INTO ' . $table . ' () VALUES ()');

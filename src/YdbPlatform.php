@@ -31,24 +31,24 @@ class YdbPlatform extends AbstractPlatform
         return true;
     }
 
-    public function getGuidTypeDeclarationSQL(array $column)
+    public function getGuidTypeDeclarationSQL(array $column): string
     {
-        return 'Uuid';
+        return YdbTypes::UUID;
     }
 
-    protected function getVarcharTypeDeclarationSQLSnippet($length, $fixed/*, $lengthOmitted = false*/)
+    protected function getVarcharTypeDeclarationSQLSnippet($length, $fixed/*, $lengthOmitted = false*/): string
     {
-        return 'Utf8';
+        return YdbTypes::TEXT;
     }
 
-    protected function getBinaryTypeDeclarationSQLSnippet($length, $fixed)
+    protected function getBinaryTypeDeclarationSQLSnippet($length, $fixed): string
     {
-        return 'String';
+        return YdbTypes::BINARY;
     }
 
-    public function getJsonTypeDeclarationSQL(array $column)
+    public function getJsonTypeDeclarationSQL(array $column): string
     {
-        return 'Json';
+        return YdbTypes::JSON;
     }
 
     public function getAlterTableSQL(TableDiff $diff)
@@ -56,7 +56,7 @@ class YdbPlatform extends AbstractPlatform
         return;
     }
 
-    public function supportsSequences()
+    public function supportsSequences(): bool
     {
         // false
         return true;
@@ -82,7 +82,7 @@ class YdbPlatform extends AbstractPlatform
     /**
      * Нет DEFAULT
      */
-    public function getDefaultValueDeclarationSQL($column)
+    public function getDefaultValueDeclarationSQL($column): string
     {
         return '';
     }
@@ -90,75 +90,75 @@ class YdbPlatform extends AbstractPlatform
     /**
      * {@inheritDoc}
      */
-    public function getDateTimeTypeDeclarationSQL(array $column)
+    public function getDateTimeTypeDeclarationSQL(array $column): string
     {
-        return 'Datetime';
+        return YdbTypes::DATETIME;
     }
 
-    public function getDateTypeDeclarationSQL(array $column)
+    public function getDateTypeDeclarationSQL(array $column): string
     {
-        return 'Date';
+        return YdbTypes::DATE;
     }
 
     /**
      * {@inheritDoc}
      */
-    public function getDateTimeTzTypeDeclarationSQL(array $column)
+    public function getDateTimeTzTypeDeclarationSQL(array $column): string
     {
-        return 'Datetime';
+        return YdbTypes::DATETIME;
     }
 
-    public function getDateTimeFormatString()
+    public function getDateTimeFormatString(): string
     {
         return 'Y-m-d H:i:s';
     }
 
-    public function getBooleanTypeDeclarationSQL(array $column)
+    public function getBooleanTypeDeclarationSQL(array $column): string
     {
-        return 'Bool';
+        return YdbTypes::BOOL;
     }
 
-    public function getIntegerTypeDeclarationSQL(array $column)
+    public function getIntegerTypeDeclarationSQL(array $column): string
     {
-        return 'Int32';
+        return YdbTypes::INTEGER;
     }
 
-    public function getBigIntTypeDeclarationSQL(array $column)
+    public function getBigIntTypeDeclarationSQL(array $column): string
     {
-        return 'Int64';
+        return YdbTypes::BIG_INT;
     }
 
-    public function getSmallIntTypeDeclarationSQL(array $column)
+    public function getSmallIntTypeDeclarationSQL(array $column): string
     {
-        return 'Int16';
+        return YdbTypes::STRING;
     }
 
-    protected function _getCommonIntegerTypeDeclarationSQL(array $column)
+    protected function _getCommonIntegerTypeDeclarationSQL(array $column): string
     {
         return '';
     }
 
-    protected function initializeDoctrineTypeMappings()
+    protected function initializeDoctrineTypeMappings(): void
     {
         $this->doctrineTypeMapping = [];
     }
 
-    public function getClobTypeDeclarationSQL(array $column)
+    public function getClobTypeDeclarationSQL(array $column): string
     {
-        return 'String';
+        return YdbTypes::STRING;
     }
 
-    public function getBlobTypeDeclarationSQL(array $column)
+    public function getBlobTypeDeclarationSQL(array $column): string
     {
-        return 'String';
+        return YdbTypes::STRING;
     }
 
-    public function getFloatDeclarationSQL(array $column)
+    public function getFloatDeclarationSQL(array $column): string
     {
-        return 'Float';
+        return YdbTypes::FLOAT;
     }
 
-    public function getName()
+    public function getName(): string
     {
         return 'ydb';
     }

@@ -13,7 +13,7 @@ class DateTimeTzType extends Type
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getName(): string
     {
         return Types::DATETIMETZ_MUTABLE;
     }
@@ -21,17 +21,17 @@ class DateTimeTzType extends Type
     /**
      * {@inheritdoc}
      */
-    public function getSQLDeclaration(array $column, AbstractPlatform $platform)
+    public function getSQLDeclaration(array $column, AbstractPlatform $platform): string
     {
         return $platform->getDateTimeTypeDeclarationSQL($column);
     }
 
-    public function canRequireSQLConversion()
+    public function canRequireSQLConversion(): bool
     {
         return true;
     }
 
-    public function convertToDatabaseValueSQL($sqlExpr, AbstractPlatform $platform)
+    public function convertToDatabaseValueSQL($sqlExpr, AbstractPlatform $platform): string
     {
         return "CAST($sqlExpr as Datetime)";
     }
@@ -39,7 +39,7 @@ class DateTimeTzType extends Type
     /**
      * {@inheritdoc}
      */
-    public function convertToDatabaseValue($value, AbstractPlatform $platform)
+    public function convertToDatabaseValue(mixed $value, AbstractPlatform $platform): mixed
     {
         if ($value === null) {
             return $value;
@@ -52,7 +52,7 @@ class DateTimeTzType extends Type
         throw ConversionException::conversionFailedInvalidType($value, $this->getName(), ['null', 'DateTime']);
     }
 
-    public function getBindingType()
+    public function getBindingType(): int
     {
         return ParameterType::DATETIME;
     }
@@ -60,7 +60,7 @@ class DateTimeTzType extends Type
     /**
      * {@inheritdoc}
      */
-    public function convertToPHPValue($value, AbstractPlatform $platform)
+    public function convertToPHPValue(mixed $value, AbstractPlatform $platform): mixed
     {
         if ($value === null || $value instanceof \DateTimeInterface) {
             return $value;
