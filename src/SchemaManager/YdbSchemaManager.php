@@ -2,6 +2,7 @@
 
 namespace Dimajolkin\YdbDoctrine\SchemaManager;
 
+use Dimajolkin\YdbDoctrine\YdbTypes;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Schema\AbstractSchemaManager;
@@ -30,17 +31,7 @@ class YdbSchemaManager extends AbstractSchemaManager
 
     private function bindType(string $type): Type
     {
-        return match ($type) {
-            'STRING' => Type::getType(Types::STRING),
-            'UTF8' => Type::getType(Types::STRING),
-            'JSON' => Type::getType(Types::JSON),
-            'DATETIME' => Type::getType(Types::DATETIME_MUTABLE),
-            'INT32' => Type::getType(Types::INTEGER),
-            'BOOL' => Type::getType(Types::BOOLEAN),
-            'DATE' => Type::getType(Types::DATETIME_MUTABLE),
-            'FLOAT' => Type::getType(Types::FLOAT),
-            default => throw new \Exception("$type not support"),
-        };
+        return YdbTypes::toDbalType($type);
     }
 
     public function listTableColumns($table, $database = null): array

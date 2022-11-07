@@ -2,6 +2,9 @@
 
 namespace Dimajolkin\YdbDoctrine;
 
+use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
+
 class YdbTypes
 {
     public const SMALL_INT = self::INT16;
@@ -31,4 +34,23 @@ class YdbTypes
     public const DATETIME = 'datetime';
     public const TIMESTAMP = 'timestamp';
     public const INTERVAL = 'interval';
+
+
+    private const MAP_TO_DBAL_TYPES = [
+        self::STRING => Types::STRING,
+        self::UTF8 => Types::STRING,
+        self::JSON => Types::JSON,
+        self::DATETIME => Types::DATETIME_MUTABLE,
+        self::INT32 => Types::INTEGER,
+        self::BOOL => Types::BOOLEAN,
+        self::DATE => Types::DATETIME_MUTABLE,
+        self::FLOAT => Types::FLOAT,
+    ];
+
+    public static function toDbalType(string $name): Type
+    {
+        $type = self::MAP_TO_DBAL_TYPES[strtolower($name)] ?? throw new \Exception("$name not mapped");
+
+        return Type::getType($type);
+    }
 }
