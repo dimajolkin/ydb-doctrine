@@ -3,24 +3,33 @@
 namespace Dimajolkin\YdbDoctrine\ORM;
 
 use Doctrine\Common\EventManager;
+use Doctrine\DBAL\Connection;
 use Doctrine\ORM\Configuration;
+use Doctrine\ORM\Decorator\EntityManagerDecorator;
+use Doctrine\ORM\QueryBuilder;
 
-class EntityManager extends \Doctrine\ORM\EntityManager
+final class EntityManager extends EntityManagerDecorator
 {
-    public static function create($connection, Configuration $config, ?EventManager $eventManager = null): EntityManager
+    public function __construct(Connection $conn, Configuration $config, EventManager $eventManager = null)
     {
-        $connection = static::createConnection($connection, $config, $eventManager);
-
-        return new EntityManager($connection, $config);
+        $entityManager = \Doctrine\ORM\EntityManager::create($conn, $config, $eventManager);
+        parent::__construct($entityManager);
     }
 
     /**
      * {@inheritDoc}
      */
-    public function createQuery($dql = '')
+    public function createQueryBuilder(): QueryBuilder
+    {
+        return new QueryBuilder($this);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function createQuery($dql = ''): Query
     {
         $query = new Query($this);
-
         if (! empty($dql)) {
             $query->setDQL($dql);
         }

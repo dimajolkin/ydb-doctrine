@@ -17,7 +17,11 @@ DATABASE_URL="ydb://localhost:2136/local?discovery=false&iam_config[anonymous]=t
 
 ```yaml
 parameters:
-  doctrine.orm.entity_manager.class: \Dimajolkin\YdbDoctrine\ORM\EntityManager
+  doctrine.orm.entity_manager.class: Dimajolkin\YdbDoctrine\ORM\EntityManager
+
+#services:
+#  doctrine.dbal.logging_middleware:
+#    class: 'Dimajolkin\YdbDoctrine\DBAL\Driver\Middleware\LoggerMiddleware'
 
 doctrine:
     dbal:

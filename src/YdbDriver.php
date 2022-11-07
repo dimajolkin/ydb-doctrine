@@ -2,7 +2,6 @@
 
 namespace Dimajolkin\YdbDoctrine;
 
-use Dimajolkin\YdbDoctrine\Parser\YdbUriParser;
 use Dimajolkin\YdbDoctrine\SchemaManager\YdbSchemaManager;
 use Dimajolkin\YdbDoctrine\Type\DateTimeType;
 use Dimajolkin\YdbDoctrine\Type\DateTimeTzType;
@@ -14,6 +13,7 @@ use Doctrine\DBAL\Driver;
 use Doctrine\DBAL\Driver\API\ExceptionConverter;
 use Doctrine\DBAL\Driver\Connection as DriverConnection;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
+use Doctrine\DBAL\Schema\AbstractSchemaManager;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\DBAL\Types\Types;
 use Psr\Log\LoggerInterface;
@@ -53,12 +53,12 @@ class YdbDriver implements Driver
         Type::overrideType(Types::DECIMAL, DecimalType::class);
     }
 
-    public function getDatabasePlatform()
+    public function getDatabasePlatform(): AbstractPlatform
     {
         return new YdbPlatform();
     }
 
-    public function getSchemaManager(Connection $conn, AbstractPlatform $platform)
+    public function getSchemaManager(Connection $conn, AbstractPlatform $platform): AbstractSchemaManager
     {
         return new YdbSchemaManager($conn, $platform, $this->ydb);
     }

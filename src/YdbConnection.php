@@ -14,11 +14,13 @@ use YandexCloud\Ydb\Ydb;
 
 class YdbConnection implements Connection, ServerInfoAwareConnection
 {
-    private ?Session $session = null;
+    private Session $session;
 
     public function __construct(
         private Ydb $ydb
-    ) { }
+    ) {
+        $this->session = $this->ydb->table()->session() ?? throw new \Exception();
+    }
 
     public static function makeConnectionByUrl(string $dbUri, LoggerInterface $logger = null): YdbConnection
     {
@@ -33,14 +35,13 @@ class YdbConnection implements Connection, ServerInfoAwareConnection
         return $this->ydb;
     }
 
-    public function getServerVersion()
+    public function getServerVersion(): string
     {
-        return '1.0';
+        return Ydb::VERSION;
     }
 
     public function prepare(string $sql): Statement
     {
-        $this->session = $this->ydb->table()->session();
         return new YdbStatement($this, $sql, $this->session);
     }
 
@@ -73,22 +74,22 @@ class YdbConnection implements Connection, ServerInfoAwareConnection
         throw new \Exception();
     }
 
-    public function beginTransaction()
+    public function beginTransaction(): bool
     {
-        $this->session?->beginTransaction();
+        $this->session->beginTransaction();
         return true;
     }
 
-    public function commit()
+    public function commit(): bool
     {
-        $this->session?->commit();
+        $this->session->commit();
         return true;
     }
 
-    public function rollBack()
+    public function rollBack(): bool
     {
         try {
-            $this->session?->rollBack();
+            $this->session->rollBack();
         } catch (\Throwable) {}
         return true;
     }
