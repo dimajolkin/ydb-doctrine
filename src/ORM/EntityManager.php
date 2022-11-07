@@ -8,7 +8,7 @@ use Doctrine\ORM\Configuration;
 use Doctrine\ORM\Decorator\EntityManagerDecorator;
 use Doctrine\ORM\QueryBuilder;
 
-final class EntityManager extends EntityManagerDecorator
+class EntityManager extends EntityManagerDecorator
 {
     public function __construct(Connection $conn, Configuration $config, EventManager $eventManager = null)
     {
