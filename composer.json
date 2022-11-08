@@ -1,5 +1,7 @@
 {
     "name": "dimajolkin/ydb-doctrine",
+    "license": "Apache-2.0",
+    "description": "It's driver for YDB https://ydb.tech",
     "autoload": {
         "psr-4": {
             "Dimajolkin\\YdbDoctrine\\": "src/"
@@ -13,7 +15,7 @@
     "authors": [
         {
             "name": "dimajolkin",
-            "email": "dimajolkin@rambler.ru"
+            "email": "dimajolkin@yandex.ru"
         }
     ],
     "require": {
