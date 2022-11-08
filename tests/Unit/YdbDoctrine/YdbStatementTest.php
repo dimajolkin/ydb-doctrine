@@ -2,7 +2,7 @@
 
 namespace Dimajolkin\YdbDoctrine\Tests\Unit\YdbDoctrine;
 
-use Dimajolkin\YdbDoctrine\YdbConnection;
+use Dimajolkin\YdbDoctrine\Driver\YdbConnection;
 use Dimajolkin\YdbDoctrine\YdbStatement;
 use Doctrine\DBAL\ParameterType;
 use PHPUnit\Framework\TestCase;

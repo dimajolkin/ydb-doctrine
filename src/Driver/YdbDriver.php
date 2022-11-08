@@ -1,6 +1,6 @@
 <?php
 
-namespace Dimajolkin\YdbDoctrine;
+namespace Dimajolkin\YdbDoctrine\Driver;
 
 use Dimajolkin\YdbDoctrine\SchemaManager\YdbSchemaManager;
 use Dimajolkin\YdbDoctrine\Type\DateTimeType;
@@ -8,6 +8,7 @@ use Dimajolkin\YdbDoctrine\Type\DateTimeTzType;
 use Dimajolkin\YdbDoctrine\Type\DecimalType;
 use Dimajolkin\YdbDoctrine\Type\FloatType;
 use Dimajolkin\YdbDoctrine\Type\JsonType;
+use Dimajolkin\YdbDoctrine\YdbPlatform;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Driver;
 use Doctrine\DBAL\Driver\API\ExceptionConverter;

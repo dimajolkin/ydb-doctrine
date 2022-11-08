@@ -11,6 +11,8 @@
 # Для ананимного доступа. Используется при локальной разработке
 DATABASE_URL="ydb://localhost:2136/local?discovery=false&iam_config[anonymous]=true&iam_config[insecure]=true"
 
+# 
+DATABASE_URL="ydb://ydb.serverless.yandexcloud.net:2135/ru-central1/xxxxxxx/xxxxxxx?discovery=false&iam_config[temp_dir]=/tmp&iam_config[use_metadata]=true"
 
 ```
 Пример настройки Symfony
@@ -27,8 +29,8 @@ doctrine:
     dbal:
         options:
             YBD_URL: '%env(resolve:DATABASE_URL)%'
-        driver_class: \Dimajolkin\YdbDoctrine\YdbDriver
-        wrapper_class: \Dimajolkin\YdbDoctrine\ConnectWrapper
+        driver_class: \Dimajolkin\YdbDoctrine\Driver\YdbDriver
+        wrapper_class: \Dimajolkin\YdbDoctrine\YdbConnection
     dql:
       string_functions:
         rand: App\Infrastructure\Doctrine\Functions\Rand

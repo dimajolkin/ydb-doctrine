@@ -2,95 +2,53 @@
 
 namespace Dimajolkin\YdbDoctrine;
 
-use Dimajolkin\YdbDoctrine\Parser\YdbUriParser;
-use Doctrine\DBAL\Driver\Connection;
-use Doctrine\DBAL\Driver\Result;
-use Doctrine\DBAL\Driver\ServerInfoAwareConnection;
-use Doctrine\DBAL\Driver\Statement;
+use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Types\Type;
 use Doctrine\DBAL\ParameterType;
-use Psr\Log\LoggerInterface;
-use YandexCloud\Ydb\Session;
-use YandexCloud\Ydb\Ydb;
 
-class YdbConnection implements Connection, ServerInfoAwareConnection
+class YdbConnection extends Connection
 {
-    private Session $session;
-
-    public function __construct(
-        private Ydb $ydb
-    ) {
-        $this->session = $this->ydb->table()->session() ?? throw new \Exception();
-    }
-
-    public static function makeConnectionByUrl(string $dbUri, LoggerInterface $logger = null): YdbConnection
+    public function insert($table, array $data, array $types = []): int|string
     {
-        $config = (new YdbUriParser())->parse($dbUri);
-        $ydb = new Ydb($config, $logger);
-
-        return new YdbConnection($ydb);
-    }
-
-    public function getYdb(): Ydb
-    {
-        return $this->ydb;
-    }
-
-    public function getServerVersion(): string
-    {
-        return Ydb::VERSION;
-    }
-
-    public function prepare(string $sql): Statement
-    {
-        return new YdbStatement($this, $sql, $this->session);
-    }
-
-    public function query(string $sql): Result
-    {
-        return $this->prepare($sql)->execute();
-    }
-
-    public function quote($value, $type = ParameterType::STRING)
-    {
-        if ($type === ParameterType::STRING) {
-            $value = addslashes(addslashes($value));
-            return "'$value'";
+        if (count($data) === 0) {
+            return $this->executeStatement('INSERT INTO ' . $table . ' () VALUES ()');
         }
 
-        if ($type === ParameterType::BOOLEAN) {
-            return $type ? 'true' : 'false';
+        $columns = [];
+        $values  = [];
+        $set     = [];
+
+        $index = -1;
+        foreach ($data as $columnName => $value) {
+            $index++;
+            $columns[] = $columnName;
+            $values[]  = $value;
+            $param = '?';
+            $type = $types[$index] ?? $types[$columnName] ?? null;
+            if ($type && Type::hasType($type)) {
+                $doctrineType = Type::getType($type);
+                if ($doctrineType->canRequireSQLConversion()) {
+                    $param = $doctrineType->convertToDatabaseValueSQL('?', $this->getDatabasePlatform());
+                }
+            }
+            $set[]     = $param;
         }
 
-        return $value;
+        return $this->executeStatement(
+            'INSERT INTO ' . $table . ' (' . implode(', ', $columns) . ')' .
+            ' VALUES (' . implode(', ', $set) . ')',
+            $values,
+            is_string(key($types)) ? $this->extractTypeValues($columns, $types) : $types,
+        );
     }
 
-    public function exec(string $sql): int
+    private function extractTypeValues(array $columnList, array $types): array
     {
-        return $this->query($sql)->rowCount();
-    }
+        $typeValues = [];
+        foreach ($columnList as $columnName) {
+            $typeValues[] = $types[$columnName] ?? ParameterType::STRING;
+        }
 
-    public function lastInsertId($name = null)
-    {
-        throw new \Exception();
-    }
-
-    public function beginTransaction(): bool
-    {
-        $this->session->beginTransaction();
-        return true;
-    }
-
-    public function commit(): bool
-    {
-        $this->session->commit();
-        return true;
-    }
-
-    public function rollBack(): bool
-    {
-        try {
-            $this->session->rollBack();
-        } catch (\Throwable) {}
-        return true;
+        return $typeValues;
     }
 }

@@ -51,9 +51,9 @@ class YdbPlatform extends AbstractPlatform
         return YdbTypes::JSON;
     }
 
-    public function getAlterTableSQL(TableDiff $diff)
+    public function getAlterTableSQL(TableDiff $diff): string
     {
-        return;
+        return '';
     }
 
     public function supportsSequences(): bool
@@ -62,7 +62,7 @@ class YdbPlatform extends AbstractPlatform
         return true;
     }
 
-    public function convertBooleans($item)
+    public function convertBooleans($item): mixed
     {
         if (is_array($item)) {
             foreach ($item as $k => $value) {

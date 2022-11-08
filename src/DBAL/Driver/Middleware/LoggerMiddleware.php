@@ -2,7 +2,7 @@
 
 namespace Dimajolkin\YdbDoctrine\DBAL\Driver\Middleware;
 
-use Dimajolkin\YdbDoctrine\YdbDriver;
+use Dimajolkin\YdbDoctrine\Driver\YdbDriver;
 use Doctrine\DBAL\Driver;
 use Doctrine\DBAL\Driver\Middleware;
 use Psr\Log\LoggerInterface;

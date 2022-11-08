@@ -2,10 +2,11 @@
 
 namespace Dimajolkin\YdbDoctrine;
 
+use Dimajolkin\YdbDoctrine\Driver\YdbConnection;
 use Doctrine\DBAL\Driver\Result;
 use Doctrine\DBAL\Driver\Statement;
 use Doctrine\DBAL\ParameterType;
-use YandexCloud\Ydb\Session;
+use YandexCloud\Ydb\Table;
 use YandexCloud\Ydb\Traits\TypeValueHelpersTrait;
 use Ydb\Type;
 use Ydb\TypedValue;
@@ -18,12 +19,13 @@ class YdbStatement implements Statement
     private array $bindValues = [];
     private array $parameters = [];
 
+    private int $reconnect = 0;
+
     public function __construct(
         private YdbConnection $connection,
         private string $sql,
-        private Session $session,
-    ) {
-    }
+        private Table $table,
+    ) {}
 
     public function bindValue($param, $value, $type = ParameterType::STRING): bool
     {
@@ -116,16 +118,24 @@ class YdbStatement implements Statement
         $sql = $this->getRawSql();
         try {
             if (str_starts_with($sql, 'CREATE')) {
-                $status = $this->session->schemeQuery($sql);
+                $status = $this->table->schemeQuery($sql);
 
                 return new YdbSchemaResult($status);
             }
             else {
-                $res = $this->session->prepare($sql)->execute($this->parameters);
+                $res = $this->table->prepare($sql)->execute($this->parameters);
 
                 return new YdbResult($res);
             }
         } catch (\Exception|\Throwable $ex) {
+            // close soket
+            //            if (str_contains($ex->getMessage(), 'Socket closed')) {
+            //                $this->reconnect++;
+            //                if ($this->reconnect < 3) {
+            //                    return $this->execute($params);
+            //                }
+            //            }
+
             throw new \Exception($sql."\n".' Details: '.$ex->getMessage(), previous: $ex);
         }
     }

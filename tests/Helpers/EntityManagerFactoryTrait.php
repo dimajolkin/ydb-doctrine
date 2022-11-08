@@ -2,9 +2,9 @@
 
 namespace Dimajolkin\YdbDoctrine\Tests\Helpers;
 
+use Dimajolkin\YdbDoctrine\Driver\YdbDriver;
 use Dimajolkin\YdbDoctrine\ORM\EntityManager;
 use Dimajolkin\YdbDoctrine\ORM\Functions\Rand;
-use Dimajolkin\YdbDoctrine\YdbDriver;
 use Dimajolkin\YdbDoctrine\YdbPlatform;
 use Doctrine\Common\EventManager;
 use Doctrine\DBAL\Connection;
