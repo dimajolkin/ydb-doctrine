@@ -23,7 +23,7 @@ use YandexCloud\Ydb\Ydb;
 /**
  * Версия файла без final атрибота и с другим классом Parser
  */
-include_once __DIR__ . '/../doctrine/Query.php';
+include_once __DIR__ . '/../../doctrine/Query.php';
 
 class YdbDriver implements Driver
 {
