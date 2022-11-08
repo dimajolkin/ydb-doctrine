@@ -31,6 +31,7 @@ doctrine:
             YBD_URL: '%env(resolve:DATABASE_URL)%'
         driver_class: \Dimajolkin\YdbDoctrine\Driver\YdbDriver
         wrapper_class: \Dimajolkin\YdbDoctrine\YdbConnection
+        server_version: 1.4
     dql:
       string_functions:
         rand: App\Infrastructure\Doctrine\Functions\Rand
