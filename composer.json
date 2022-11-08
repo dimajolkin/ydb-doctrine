@@ -19,6 +19,7 @@
         }
     ],
     "require": {
+        "php": "^8.1",
         "doctrine/orm": "^2.13",
         "dimajolkin/ydb-php-sdk": "dev-main"
     },
