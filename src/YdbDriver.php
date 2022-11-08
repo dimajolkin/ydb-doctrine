@@ -29,6 +29,11 @@ class YdbDriver implements Driver
     private ?Ydb $ydb = null;
     private ?LoggerInterface $logger = null;
 
+    public function __construct(?LoggerInterface $logger = null)
+    {
+        $this->logger = $logger;
+    }
+
     public function connect(array $params): DriverConnection
     {
         $dbUri = $params['driverOptions']['YBD_URL'] ?? throw new \Exception();
