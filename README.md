@@ -29,12 +29,12 @@ doctrine:
     dbal:
         options:
             YBD_URL: '%env(resolve:DATABASE_URL)%'
-        driver_class: \Dimajolkin\YdbDoctrine\Driver\YdbDriver
-        wrapper_class: \Dimajolkin\YdbDoctrine\YdbConnection
+        driver_class: Dimajolkin\YdbDoctrine\Driver\YdbDriver
+        wrapper_class: Dimajolkin\YdbDoctrine\YdbConnection
         server_version: 1.4
     dql:
       string_functions:
-        rand: App\Infrastructure\Doctrine\Functions\Rand
+        rand: Dimajolkin\YdbDoctrine\ORM\Functions\Rand
 ```
 
 
@@ -59,4 +59,4 @@ doctrine:
 
  Функции
 
-1. RAND(columnName) 
+1. RAND(columnName) - 
