@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  db:
+    image: cr.yandex/yc/yandex-docker-local-ydb:latest
+    ports:
+      - 8765:8765
+      - 2136:2136
+      - 48066:48066
+  app:
+    ports:
+      - 8085:8882
+    environment:
+      - APP_ENV=dev
+      - YDB_USE_IN_MEMORY_PDISKS=true
+    volumes:
+      - .:/app
+    command: 'rr serve -c /app/.rr.dev.yml'
