@@ -4,14 +4,14 @@ namespace Dimajolkin\YdbDoctrine\ORM\Functions\Expression;
 
 use Dimajolkin\YdbDoctrine\ORM\Query\YdbWalker;
 use Doctrine\ORM\Query\AST\Node;
-use Doctrine\ORM\Query\SqlWalker;
 
 class RandExpression extends Node
 {
     public function __construct(
         private string $tableAlias,
         private string $columnName
-    ) { }
+    ) {
+    }
 
     public function getTableAlias(): string
     {

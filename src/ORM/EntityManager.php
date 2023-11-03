@@ -16,21 +16,15 @@ class EntityManager extends EntityManagerDecorator
         parent::__construct($entityManager);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function createQueryBuilder(): QueryBuilder
     {
         return new QueryBuilder($this);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function createQuery($dql = ''): Query
     {
         $query = new Query($this);
-        if (! empty($dql)) {
+        if (!empty($dql)) {
             $query->setDQL($dql);
         }
 

@@ -3,7 +3,6 @@
 namespace Dimajolkin\YdbDoctrine\Platform;
 
 use Doctrine\DBAL\Platforms\Keywords\KeywordList;
-use Doctrine\Deprecations\Deprecation;
 
 class Keywords extends KeywordList
 {
@@ -12,9 +11,6 @@ class Keywords extends KeywordList
         return 'ydb';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function getKeywords()
     {
         return [

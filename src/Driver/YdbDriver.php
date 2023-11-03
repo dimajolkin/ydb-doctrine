@@ -18,19 +18,19 @@ use Doctrine\DBAL\Schema\AbstractSchemaManager;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\DBAL\Types\Types;
 use Psr\Log\LoggerInterface;
-use YandexCloud\Ydb\Ydb;
+use YdbPlatform\Ydb\Ydb;
 
 /**
- * Версия файла без final атрибота и с другим классом Parser
+ * Версия файла без final атрибота и с другим классом Parser.
  */
-include_once __DIR__ . '/../../doctrine/Query.php';
+include_once __DIR__.'/../../doctrine/Query.php';
 
 class YdbDriver implements Driver
 {
     private ?Ydb $ydb = null;
     private ?LoggerInterface $logger = null;
 
-    public function __construct(?LoggerInterface $logger = null)
+    public function __construct(LoggerInterface $logger = null)
     {
         $this->logger = $logger;
     }

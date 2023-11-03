@@ -9,10 +9,8 @@ use Doctrine\DBAL\Schema\AbstractSchemaManager;
 use Doctrine\DBAL\Schema\Column;
 use Doctrine\DBAL\Schema\Index;
 use Doctrine\DBAL\Schema\TableDiff;
-use Doctrine\DBAL\Types\StringType;
 use Doctrine\DBAL\Types\Type;
-use Doctrine\DBAL\Types\Types;
-use YandexCloud\Ydb\Ydb;
+use YdbPlatform\Ydb\Ydb;
 
 class YdbSchemaManager extends AbstractSchemaManager
 {
@@ -63,6 +61,7 @@ class YdbSchemaManager extends AbstractSchemaManager
         $indexes = [];
         $columns = $data['primaryKey'];
         $indexes[] = new Index('primary', $columns, true, true, [], []);
+
         return $indexes;
     }
 
@@ -75,7 +74,7 @@ class YdbSchemaManager extends AbstractSchemaManager
     {
         $tableNames = [];
         foreach ($this->ydb->scheme()->listDirectory() as $table) {
-            if ($table['type'] === 'TABLE') {
+            if ('TABLE' === $table['type']) {
                 $tableNames[] = $table['name'];
             }
         }

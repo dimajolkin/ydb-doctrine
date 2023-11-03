@@ -7,13 +7,13 @@ class YdbUriParser
     public function parse(string $url): array
     {
         $data = parse_url($url);
-        if ($data['scheme'] !== 'ydb') {
+        if ('ydb' !== $data['scheme']) {
             throw new \Exception();
         }
 
         $endpoint = $data['host'] ?? throw new \Exception();
         if (isset($data['port'])) {
-            $endpoint .= ':' . $data['port'];
+            $endpoint .= ':'.$data['port'];
         }
 
         $query = [];
@@ -25,9 +25,9 @@ class YdbUriParser
         });
 
         return [
-            'database'    => $data['path'],
-            'endpoint'    => $endpoint,
-            'discovery'   => false,
+            'database' => $data['path'],
+            'endpoint' => $endpoint,
+            'discovery' => false,
         ] + $query;
     }
 }

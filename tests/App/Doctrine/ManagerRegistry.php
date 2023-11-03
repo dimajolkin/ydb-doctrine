@@ -3,7 +3,6 @@
 namespace Dimajolkin\YdbDoctrine\Tests\App\Doctrine;
 
 use Doctrine\Persistence\AbstractManagerRegistry;
-use Doctrine\Persistence\ObjectManager;
 
 class ManagerRegistry extends AbstractManagerRegistry
 {

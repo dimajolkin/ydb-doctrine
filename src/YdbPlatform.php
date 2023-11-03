@@ -3,22 +3,13 @@
 namespace Dimajolkin\YdbDoctrine;
 
 use Dimajolkin\YdbDoctrine\Platform\Keywords;
-use Dimajolkin\YdbDoctrine\Type\BoolType;
-use Dimajolkin\YdbDoctrine\Type\DateTimeType;
-use Dimajolkin\YdbDoctrine\Type\DateTimeTzType;
-use Doctrine\DBAL\Exception;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Schema\TableDiff;
-use Doctrine\DBAL\Types\Type;
-use Doctrine\DBAL\Types\Types;
-use Symfony\Component\Validator\Constraints\DateTime;
-use YandexCloud\Ydb\Ydb;
 
 class YdbPlatform extends AbstractPlatform
 {
     protected function initializeCommentedDoctrineTypes(): void
     {
-
     }
 
     public function getDecimalTypeDeclarationSQL(array $column): string
@@ -36,7 +27,7 @@ class YdbPlatform extends AbstractPlatform
         return YdbTypes::UUID;
     }
 
-    protected function getVarcharTypeDeclarationSQLSnippet($length, $fixed/*, $lengthOmitted = false*/): string
+    protected function getVarcharTypeDeclarationSQLSnippet($length, $fixed/* , $lengthOmitted = false */): string
     {
         return YdbTypes::TEXT;
     }
@@ -66,7 +57,7 @@ class YdbPlatform extends AbstractPlatform
     {
         if (is_array($item)) {
             foreach ($item as $k => $value) {
-                if (! is_bool($value)) {
+                if (!is_bool($value)) {
                     continue;
                 }
 
@@ -80,16 +71,13 @@ class YdbPlatform extends AbstractPlatform
     }
 
     /**
-     * Нет DEFAULT
+     * Нет DEFAULT.
      */
     public function getDefaultValueDeclarationSQL($column): string
     {
         return '';
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function getDateTimeTypeDeclarationSQL(array $column): string
     {
         return YdbTypes::DATETIME;
@@ -100,9 +88,6 @@ class YdbPlatform extends AbstractPlatform
         return YdbTypes::DATE;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function getDateTimeTzTypeDeclarationSQL(array $column): string
     {
         return YdbTypes::DATETIME;

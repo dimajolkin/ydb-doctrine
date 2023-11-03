@@ -17,7 +17,7 @@ class Rand extends FunctionNode
     {
         $lexer = $parser->getLexer();
         $functionName = $lexer->lookahead['value'];
-        if ($functionName !== 'RAND') {
+        if ('RAND' !== $functionName) {
             throw new QueryException();
         }
         $parser->match($lexer->lookahead['type']);

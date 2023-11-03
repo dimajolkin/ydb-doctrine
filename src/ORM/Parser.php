@@ -5,8 +5,8 @@ namespace Dimajolkin\YdbDoctrine\ORM;
 use Dimajolkin\YdbDoctrine\ORM\Hack\Setter;
 use Dimajolkin\YdbDoctrine\ORM\Query\YdbWalker;
 use Doctrine\ORM\Query\Lexer;
+use Doctrine\ORM\Query\Parser as DoctrineParser;
 use Doctrine\ORM\Query\ParserResult;
-use \Doctrine\ORM\Query\Parser as DoctrineParser;
 
 class Parser extends DoctrineParser
 {

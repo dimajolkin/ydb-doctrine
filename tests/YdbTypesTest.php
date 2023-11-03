@@ -4,7 +4,7 @@ namespace Dimajolkin\YdbDoctrine\Tests;
 
 use Dimajolkin\YdbDoctrine\YdbTypes;
 use PHPUnit\Framework\TestCase;
-use YandexCloud\Ydb\Traits\TypeValueHelpersTrait;
+use YdbPlatform\Ydb\Traits\TypeValueHelpersTrait;
 
 class YdbTypesTest extends TestCase
 {

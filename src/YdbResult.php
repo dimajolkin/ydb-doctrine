@@ -3,9 +3,8 @@
 namespace Dimajolkin\YdbDoctrine;
 
 use Doctrine\DBAL\Cache\ArrayResult;
-use Doctrine\DBAL\Driver\Exception;
 use Doctrine\DBAL\Driver\Result;
-use YandexCloud\Ydb\QueryResult;
+use YdbPlatform\Ydb\QueryResult;
 
 class YdbResult implements Result
 {
@@ -59,6 +58,6 @@ class YdbResult implements Result
 
     public function free(): void
     {
-        $this->result->free();;
+        $this->result->free();
     }
 }

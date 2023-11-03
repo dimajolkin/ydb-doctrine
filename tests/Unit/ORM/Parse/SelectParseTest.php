@@ -3,13 +3,6 @@
 namespace Dimajolkin\YdbDoctrine\Tests\Unit\ORM\Parse;
 
 use Dimajolkin\YdbDoctrine\Tests\App\Entity\User;
-use Dimajolkin\YdbDoctrine\YdbPlatform;
-use Doctrine\Common\EventManager;
-use Doctrine\DBAL\Connection;
-use Doctrine\ORM\Configuration;
-use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\Mapping\Driver\AttributeDriver;
-use PHPUnit\Framework\TestCase;
 
 class SelectParseTest extends AbstractParseTest
 {
@@ -47,7 +40,6 @@ class SelectParseTest extends AbstractParseTest
         $this->assertEquals('SELECT DISTINCT u, u.id FROM Dimajolkin\YdbDoctrine\Tests\App\Entity\User u ORDER BY u.id ASC', $qb->getDQL());
         $this->assertEquals('SELECT DISTINCT u0_.id AS id_0, u0_.id AS id_1 FROM user u0_ ORDER BY id_0 ASC LIMIT 20', $qb->getQuery()->getSQL());
     }
-
 
     public function testParseDQL(): void
     {

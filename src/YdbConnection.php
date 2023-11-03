@@ -3,26 +3,26 @@
 namespace Dimajolkin\YdbDoctrine;
 
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\Types\Type;
 use Doctrine\DBAL\ParameterType;
+use Doctrine\DBAL\Types\Type;
 
 class YdbConnection extends Connection
 {
     public function insert($table, array $data, array $types = []): int|string
     {
-        if (count($data) === 0) {
-            return $this->executeStatement('INSERT INTO ' . $table . ' () VALUES ()');
+        if (0 === count($data)) {
+            return $this->executeStatement('INSERT INTO '.$table.' () VALUES ()');
         }
 
         $columns = [];
-        $values  = [];
-        $set     = [];
+        $values = [];
+        $set = [];
 
         $index = -1;
         foreach ($data as $columnName => $value) {
-            $index++;
+            ++$index;
             $columns[] = $columnName;
-            $values[]  = $value;
+            $values[] = $value;
             $param = '?';
             $type = $types[$index] ?? $types[$columnName] ?? null;
             if ($type && Type::hasType($type)) {
@@ -31,12 +31,12 @@ class YdbConnection extends Connection
                     $param = $doctrineType->convertToDatabaseValueSQL('?', $this->getDatabasePlatform());
                 }
             }
-            $set[]     = $param;
+            $set[] = $param;
         }
 
         return $this->executeStatement(
-            'INSERT INTO ' . $table . ' (' . implode(', ', $columns) . ')' .
-            ' VALUES (' . implode(', ', $set) . ')',
+            'INSERT INTO '.$table.' ('.implode(', ', $columns).')'.
+            ' VALUES ('.implode(', ', $set).')',
             $values,
             is_string(key($types)) ? $this->extractTypeValues($columns, $types) : $types,
         );

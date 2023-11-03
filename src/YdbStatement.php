@@ -6,10 +6,10 @@ use Dimajolkin\YdbDoctrine\Driver\YdbConnection;
 use Doctrine\DBAL\Driver\Result;
 use Doctrine\DBAL\Driver\Statement;
 use Doctrine\DBAL\ParameterType;
-use YandexCloud\Ydb\Table;
-use YandexCloud\Ydb\Traits\TypeValueHelpersTrait;
 use Ydb\Type;
 use Ydb\TypedValue;
+use YdbPlatform\Ydb\Table;
+use YdbPlatform\Ydb\Traits\TypeValueHelpersTrait;
 
 class YdbStatement implements Statement
 {
@@ -25,7 +25,8 @@ class YdbStatement implements Statement
         private YdbConnection $connection,
         private string $sql,
         private Table $table,
-    ) {}
+    ) {
+    }
 
     public function bindValue($param, $value, $type = ParameterType::STRING): bool
     {
@@ -45,10 +46,9 @@ class YdbStatement implements Statement
         $index = 1;
         $declareSql = [];
         foreach ($this->bindValues as $param => [$value, $type]) {
-            if ($value === null) {
+            if (null === $value) {
                 $rawSql = preg_replace('/\?/', 'NULL', $rawSql, 1);
-            }
-            else {
+            } else {
                 $name = '$col'.$index++;
                 $type = $this->makeYdbType($value, $type);
                 $typeName = Type\PrimitiveTypeId::name($type->getType()->getTypeId());
@@ -63,51 +63,39 @@ class YdbStatement implements Statement
 
     private function makeYdbType($value, $type): TypedValue
     {
-        if ($type === \Dimajolkin\YdbDoctrine\ParameterType::STRING) {
+        if (\Dimajolkin\YdbDoctrine\ParameterType::STRING === $type) {
             return $this->typeValue((string) $value, 'UTF8')->toTypedValue();
-        }
-        elseif ($type === \Dimajolkin\YdbDoctrine\ParameterType::BINARY) {
+        } elseif (\Dimajolkin\YdbDoctrine\ParameterType::BINARY === $type) {
             return $this->typeValue((string) $value, 'STRING')->toTypedValue();
-        }
-        elseif ($type === \Dimajolkin\YdbDoctrine\ParameterType::INTEGER) {
+        } elseif (\Dimajolkin\YdbDoctrine\ParameterType::INTEGER === $type) {
             return $this->typeValue((int) $value, 'INT32')->toTypedValue();
-        }
-        elseif ($type === \Dimajolkin\YdbDoctrine\ParameterType::BOOLEAN) {
-            if ($value === 'true') {
+        } elseif (\Dimajolkin\YdbDoctrine\ParameterType::BOOLEAN === $type) {
+            if ('true' === $value) {
                 $value = true;
-            }
-            elseif ($value === 'false') {
+            } elseif ('false' === $value) {
                 $value = false;
-            }
-            else {
+            } else {
                 throw new \Exception("Undefined bool value equals $value");
             }
 
             return $this->typeValue($value, 'BOOL')->toTypedValue();
-        }
-        elseif ($type === \Dimajolkin\YdbDoctrine\ParameterType::DATETIME) {
+        } elseif (\Dimajolkin\YdbDoctrine\ParameterType::DATETIME === $type) {
             if ($value instanceof \DateTimeImmutable) {
                 $value = \DateTime::createFromImmutable($value);
             }
 
             return $this->typeValue($value, 'DATETIME')->toTypedValue();
-        }
-        elseif ($type === \Dimajolkin\YdbDoctrine\ParameterType::JSON) {
+        } elseif (\Dimajolkin\YdbDoctrine\ParameterType::JSON === $type) {
             return $this->typeValue($value, 'JSON')->toTypedValue();
-        }
-        elseif ($type === \Dimajolkin\YdbDoctrine\ParameterType::FLOAT) {
+        } elseif (\Dimajolkin\YdbDoctrine\ParameterType::FLOAT === $type) {
             return $this->typeValue($value, 'FLOAT')->toTypedValue();
-        }
-        elseif ($type === \Dimajolkin\YdbDoctrine\ParameterType::DECIMAL) {
+        } elseif (\Dimajolkin\YdbDoctrine\ParameterType::DECIMAL === $type) {
             return $this->typeValue($value, 'FLOAT')->toTypedValue();
-        }
-        elseif ($type === \Dimajolkin\YdbDoctrine\ParameterType::TIMESTAMP) {
+        } elseif (\Dimajolkin\YdbDoctrine\ParameterType::TIMESTAMP === $type) {
             return $this->typeValue($value, 'TIMESTAMP')->toTypedValue();
-        }
-        elseif ($type === \Dimajolkin\YdbDoctrine\ParameterType::UINT32) {
+        } elseif (\Dimajolkin\YdbDoctrine\ParameterType::UINT32 === $type) {
             return $this->typeValue($value, 'UINT32')->toTypedValue();
-        }
-        elseif ($type === \Dimajolkin\YdbDoctrine\ParameterType::UINT64) {
+        } elseif (\Dimajolkin\YdbDoctrine\ParameterType::UINT64 === $type) {
             return $this->typeValue($value, 'UINT64')->toTypedValue();
         }
         throw new \Exception("$type, $value not support");
@@ -121,8 +109,7 @@ class YdbStatement implements Statement
                 $status = $this->table->schemeQuery($sql);
 
                 return new YdbSchemaResult($status);
-            }
-            else {
+            } else {
                 $res = $this->table->prepare($sql)->execute($this->parameters);
 
                 return new YdbResult($res);

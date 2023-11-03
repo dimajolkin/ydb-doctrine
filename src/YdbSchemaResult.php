@@ -2,15 +2,14 @@
 
 namespace Dimajolkin\YdbDoctrine;
 
-use Doctrine\DBAL\Driver\Exception;
 use Doctrine\DBAL\Driver\Result;
-use YandexCloud\Ydb\QueryResult;
 
 class YdbSchemaResult implements Result
 {
     public function __construct(
         private bool $status,
-    ) {}
+    ) {
+    }
 
     public function fetchNumeric()
     {
@@ -54,6 +53,5 @@ class YdbSchemaResult implements Result
 
     public function free(): void
     {
-
     }
 }

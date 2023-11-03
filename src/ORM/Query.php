@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Dimajolkin\YdbDoctrine\ORM;
 
-
 use Doctrine\ORM\Query as DoctrineQuery;
 
 /**
@@ -12,5 +11,4 @@ use Doctrine\ORM\Query as DoctrineQuery;
  */
 class Query extends DoctrineQuery
 {
-
 }

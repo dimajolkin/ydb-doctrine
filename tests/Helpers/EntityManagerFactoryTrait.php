@@ -22,8 +22,8 @@ trait EntityManagerFactoryTrait
 
         $configuration = new Configuration();
         $configuration->addCustomStringFunction('RAND', Rand::class);
-        $configuration->setMetadataDriverImpl(new AttributeDriver([__DIR__ . '/App/Entity']));
-        $configuration->setProxyDir(__DIR__ . '/App');
+        $configuration->setMetadataDriverImpl(new AttributeDriver([__DIR__.'/App/Entity']));
+        $configuration->setProxyDir(__DIR__.'/App');
         $configuration->setProxyNamespace('App');
 
         return new EntityManager($connect, $configuration);

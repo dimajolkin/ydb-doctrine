@@ -6,8 +6,8 @@ use Dimajolkin\YdbDoctrine\Driver\YdbConnection;
 use Dimajolkin\YdbDoctrine\YdbStatement;
 use Doctrine\DBAL\ParameterType;
 use PHPUnit\Framework\TestCase;
-use YandexCloud\Ydb\Session;
-use YandexCloud\Ydb\Ydb;
+use YdbPlatform\Ydb\Session;
+use YdbPlatform\Ydb\Ydb;
 
 class YdbStatementTest extends TestCase
 {

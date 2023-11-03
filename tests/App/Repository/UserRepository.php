@@ -14,5 +14,4 @@ class UserRepository extends EntityRepository
         $manager = $registry->getManagerForClass($entityClass);
         parent::__construct($manager, $manager->getClassMetadata($entityClass));
     }
-
 }

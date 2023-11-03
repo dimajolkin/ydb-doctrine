@@ -7,7 +7,7 @@ $finder = (new PhpCsFixer\Finder())
 
 return (new PhpCsFixer\Config())
     ->setRules([
-        '@PSR12' => true,
+        '@Symfony' => true,
         'no_whitespace_in_blank_line' => false,
     ])
     ->setFinder($finder)

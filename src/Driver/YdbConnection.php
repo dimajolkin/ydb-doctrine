@@ -9,9 +9,8 @@ use Doctrine\DBAL\Driver\Result;
 use Doctrine\DBAL\Driver\Statement;
 use Doctrine\DBAL\ParameterType;
 use Psr\Log\LoggerInterface;
-use YandexCloud\Ydb\Table;
-use YandexCloud\Ydb\Ydb;
-use function \addslashes;
+use YdbPlatform\Ydb\Table;
+use YdbPlatform\Ydb\Ydb;
 
 class YdbConnection implements Connection
 {
@@ -54,12 +53,13 @@ class YdbConnection implements Connection
 
     public function quote($value, $type = ParameterType::STRING)
     {
-        if ($type === ParameterType::STRING) {
-            $value = addslashes(addslashes($value));
+        if (ParameterType::STRING === $type) {
+            $value = \addslashes(\addslashes($value));
+
             return "'$value'";
         }
 
-        if ($type === ParameterType::BOOLEAN) {
+        if (ParameterType::BOOLEAN === $type) {
             return $type ? 'true' : 'false';
         }
 
@@ -90,6 +90,7 @@ class YdbConnection implements Connection
     public function commit(): bool
     {
         $this->table->session()?->commit();
+
         return true;
     }
 
@@ -97,7 +98,9 @@ class YdbConnection implements Connection
     {
         try {
             $this->table->session()?->rollBack();
-        } catch (\Throwable) {}
+        } catch (\Throwable) {
+        }
+
         return true;
     }
 }

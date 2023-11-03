@@ -50,11 +50,10 @@ class YdbWalker extends SqlWalker
         return 'RANDOM('.$field.')';
     }
 
-
     /**
      * Walks down an OrderByItem AST node, thereby generating the appropriate SQL.
      *
-     * @param  OrderByItem  $orderByItem
+     * @param OrderByItem $orderByItem
      *
      * @return string
      */
@@ -72,12 +71,11 @@ class YdbWalker extends SqlWalker
             } else {
                 $sql = $expr->dispatch($this);
             }
-        }
-        else {
+        } else {
             $sql = $this->walkResultVariable($this->getQueryComponents()[$expr]['token']['value']);
         }
 
-//        $this->orderedColumnsMap[$sql] = $type;
+        //        $this->orderedColumnsMap[$sql] = $type;
         $map = $this->setter->getValue('orderedColumnsMap');
         $map[$sql] = $type;
         $this->setter->setValue('orderedColumnsMap', $map);

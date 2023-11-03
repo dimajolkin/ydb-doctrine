@@ -35,7 +35,6 @@ class YdbTypes
     public const TIMESTAMP = 'timestamp';
     public const INTERVAL = 'interval';
 
-
     private const MAP_TO_DBAL_TYPES = [
         self::STRING => Types::STRING,
         self::UTF8 => Types::STRING,

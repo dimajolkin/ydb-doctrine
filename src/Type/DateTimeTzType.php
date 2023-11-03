@@ -10,17 +10,11 @@ use Doctrine\DBAL\Types\Types;
 
 class DateTimeTzType extends Type
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getName(): string
     {
         return Types::DATETIMETZ_MUTABLE;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getSQLDeclaration(array $column, AbstractPlatform $platform): string
     {
         return $platform->getDateTimeTypeDeclarationSQL($column);
@@ -36,12 +30,9 @@ class DateTimeTzType extends Type
         return "CAST($sqlExpr as Datetime)";
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function convertToDatabaseValue(mixed $value, AbstractPlatform $platform): mixed
     {
-        if ($value === null) {
+        if (null === $value) {
             return $value;
         }
 
@@ -57,27 +48,20 @@ class DateTimeTzType extends Type
         return ParameterType::DATETIME;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function convertToPHPValue(mixed $value, AbstractPlatform $platform): mixed
     {
-        if ($value === null || $value instanceof \DateTimeInterface) {
+        if (null === $value || $value instanceof \DateTimeInterface) {
             return $value;
         }
 
         $val = \DateTime::createFromFormat($platform->getDateTimeFormatString(), $value);
 
-        if ($val === false) {
+        if (false === $val) {
             $val = date_create($value);
         }
 
-        if ($val === false) {
-            throw ConversionException::conversionFailedFormat(
-                $value,
-                $this->getName(),
-                $platform->getDateTimeFormatString(),
-            );
+        if (false === $val) {
+            throw ConversionException::conversionFailedFormat($value, $this->getName(), $platform->getDateTimeFormatString());
         }
 
         return $val;
