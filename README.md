@@ -1,5 +1,6 @@
 ## Demo
 
+[![Test](https://github.com/dimajolkin/ydb-doctrine/actions/workflows/php.yml/badge.svg?branch=master)](https://github.com/dimajolkin/ydb-doctrine/actions/workflows/php.yml)
 
 ```bash
     composer require dimajolkin/ydb-doctrine:dev-master
@@ -15,7 +16,7 @@ DATABASE_URL="ydb://localhost:2136/local?discovery=false&iam_config[anonymous]=t
 DATABASE_URL="ydb://ydb.serverless.yandexcloud.net:2135/ru-central1/xxxxxxx/xxxxxxx?discovery=false&iam_config[temp_dir]=/tmp&iam_config[use_metadata]=true"
 
 ```
-Пример настройки Symfony
+Example for Symfony:
 
 ```yaml
 parameters:
@@ -61,17 +62,15 @@ doctrine:
 
 1. RAND(columnName) - 
 
-
-
 DBAL Type mapping to YDB:
 
 | Doctrine\DBAL\Types     | Value                | YDB Type |
 |-------------------------|----------------------|----------|
-| ARRAY                   | array                |          |
-| ASCII_STRING            | ascii_string         |          |
+| ARRAY                   | array                | json     |
+| ASCII_STRING            | ascii_string         | utf8     |
 | BIGINT                  | bigint               | int64    |
 | BINARY                  | binary               | string   |
-| BLOB                    | blob                 |          |
+| BLOB                    | blob                 | string   |
 | BOOLEAN                 | boolean              | bool     |
 | DATE_MUTABLE            | date                 |          |
 | DATE_IMMUTABLE          | date_immutable       |          |
@@ -82,16 +81,16 @@ DBAL Type mapping to YDB:
 | DATETIMETZ_IMMUTABLE    | datetimetz_immutable |          |
 | DECIMAL                 | decimal              |          |
 | FLOAT                   | float                | float    |
-| GUID                    | guid                 |          |
+| GUID                    | guid                 | uuid     |
 | INTEGER                 | integer              | int32    |
 | JSON                    | json                 | json     |
-| OBJECT                  | object               |          |
-| SIMPLE_ARRAY            | simple_array         |          |
+| OBJECT                  | object               | -        |
+| SIMPLE_ARRAY            | simple_array         | json     |
 | SMALLINT                | smallint             | int8     |
 | STRING                  | string               | utf8     |
 | TEXT                    | text                 | utf8     |
-| TIME_MUTABLE            | time                 |          |
-| TIME_IMMUTABLE          | time_immutable       |          |
+| TIME_MUTABLE            | time                 | int32    |
+| TIME_IMMUTABLE          | time_immutable       | int32    |
 
 
 YDB Type:

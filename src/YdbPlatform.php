@@ -3,10 +3,11 @@
 namespace Dimajolkin\YdbDoctrine;
 
 use Dimajolkin\YdbDoctrine\Platform\Keywords;
+use Doctrine\DBAL\Exception;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Schema\TableDiff;
 
-class YdbPlatform extends AbstractPlatform
+final class YdbPlatform extends AbstractPlatform
 {
     protected function initializeCommentedDoctrineTypes(): void
     {
@@ -49,8 +50,7 @@ class YdbPlatform extends AbstractPlatform
 
     public function supportsSequences(): bool
     {
-        // false
-        return true;
+        return false;
     }
 
     public function convertBooleans($item): mixed
