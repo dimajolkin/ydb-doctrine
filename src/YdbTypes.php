@@ -5,7 +5,7 @@ namespace Dimajolkin\YdbDoctrine;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\DBAL\Types\Types;
 
-class YdbTypes
+final class YdbTypes
 {
     public const SMALL_INT = self::INT16;
     public const BIG_INT = self::INT64;

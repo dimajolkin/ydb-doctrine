@@ -12,7 +12,7 @@ use Psr\Log\LoggerInterface;
 use YdbPlatform\Ydb\Table;
 use YdbPlatform\Ydb\Ydb;
 
-class YdbConnection implements Connection
+final class YdbConnection implements Connection
 {
     private Table $table;
 

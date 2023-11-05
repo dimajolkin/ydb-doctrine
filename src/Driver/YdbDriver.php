@@ -37,7 +37,7 @@ class YdbDriver implements Driver
 
     public function connect(array $params): DriverConnection
     {
-        $dbUri = $params['driverOptions']['YBD_URL'] ?? throw new \Exception();
+        $dbUri = $params['url'] ?? $params['driverOptions']['url'] ?? throw new \Exception();
         $this->overrideBaseTypes();
         $connect = YdbConnection::makeConnectionByUrl($dbUri, $this->logger);
         $this->ydb = $connect->getYdb();
