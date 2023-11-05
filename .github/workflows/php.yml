@@ -7,12 +7,12 @@ jobs:
     name: PHPUnit
     runs-on: ubuntu-latest
     env:
-      YDB_URL: ydb://localhost:2136/local?discovery=false&amp;iam_config[anonymous]=true&amp;iam_config[insecure]=true
+      YDB_URL: ydb://ydb:2136/local?discovery=false&amp;iam_config[anonymous]=true&amp;iam_config[insecure]=true
     strategy:
       matrix:
         php: ['8.1']
     services:
-      mysql:
+      ydb:
         image: cr.yandex/yc/yandex-docker-local-ydb:latest
         env:
           YDB_USE_IN_MEMORY_PDISKS: env
@@ -21,14 +21,15 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      - name: Install Composer dependencies
-        run: composer install -o --no-progress
       - name: Setup PHP
         uses: shivammathur/setup-php@v1
         with:
           php-version: ${{ matrix.php }}
-          extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, mysql, mysqli, pdo_mysql, bcmath, soap, intl, gd, exif, iconv, imagick, grpc
+          extensions: curl, mbstring, zip, bcmath, grpc
           coverage: none
+      - name: Install Composer dependencies
+        run: composer install -o --no-progress
+
       - name: PHPUnit
         run: |
           vendor/bin/phpunit
