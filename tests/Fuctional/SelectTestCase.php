@@ -2,7 +2,7 @@
 
 namespace Dimajolkin\YdbDoctrine\Tests\Fuctional;
 
-final class SelectTestCase extends AbstractTestCase
+final class SelectTestCase extends AbstractFunctionalCase
 {
     public function testSelectOne(): void
     {

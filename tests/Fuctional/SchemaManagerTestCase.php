@@ -5,7 +5,7 @@ namespace Dimajolkin\YdbDoctrine\Tests\Fuctional;
 use Doctrine\DBAL\Schema\Table;
 use Doctrine\DBAL\Types\Types;
 
-class SchemaManagerTestCase extends AbstractTestCase
+class SchemaManagerTestCase extends AbstractFunctionalCase
 {
     private function createTable(string $name): Table
     {

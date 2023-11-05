@@ -6,7 +6,7 @@ use Dimajolkin\YdbDoctrine\Driver\YdbDriver;
 use Dimajolkin\YdbDoctrine\YdbConnection;
 use PHPUnit\Framework\TestCase;
 
-abstract class AbstractTestCase extends TestCase
+abstract class AbstractFunctionalCase extends TestCase
 {
     protected YdbConnection $connection;
 
